@@ -110,13 +110,17 @@ Leap.loop(controllerOptions, function(frame) {
           handString += "Fingers IDs: " + fingerIds.join(", ") + "<br />";
         }
       }
-
+      if (hand.pinchStrength > 0.75) {
+        handString += "Conducting <br />"
+      }
       handString += "</div>";
     }
+
   }
   else {
     handString += "No hands";
   }
+
   handOutput.innerHTML = handString;
 
   // Display Pointable (finger and tool) object data
@@ -156,6 +160,9 @@ Leap.loop(controllerOptions, function(frame) {
         });
         pointableString += "Tip position: " + vectorToString(pointable.tipPosition) + " mm<br />";
         pointableString += "</div>";
+      }
+      if (pointable.direction[1] < 0) {
+        pointableString += "Piano" + "<br />";
       }
     }
   }
