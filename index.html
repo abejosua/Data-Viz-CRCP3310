@@ -4,35 +4,37 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r66/three.js"></script>
     <script src="https://js.leapmotion.com/leap-0.6.4.min.js"></script>
     <script src="https://js.leapmotion.com/leap-plugins-0.1.6.1.js"></script>
-    <script src="https://js.leapmotion.com/leap.rigged-hand-0.1.3.min.js"></script>
+    <script src="https://js.leapmotion.com/leap.rigged-hand-0.1.4.js"></script>
 
     <style>
       body{
         font-family: 'Myriad Pro', Helvetica, Arial, 'Lucida Grande', sans-serif;
         font-size: 24pt;
         color: white;
+        background-image: url("spotlight.jpg");
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
         background-color: black;
       }
       label {
         position: fixed;
         white-space: nowrap;
       }
-      output{
-      font-size: 66px;
-      color: #005d98;
-      text-align: right;
-      position: fixed;
-      bottom: 18px;
+      output {
+        font-size: 66px;
+        color: #005d98;
+        text-align: right;
+        position: fixed;
+        bottom: 18px;
+      }
+      img {
+        position: absolute;
+        left: 50%;
+        top: 70%;
+        margin-top: -100px; 
+        margin-left: -150px;
       }
     
-      progress {
-      background: #005d98;
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      height: 16px;
-      width: 0%;
-      }
     </style>
   </head>
 
@@ -40,9 +42,40 @@
     <div id="labels"></div>
     <div id="output"></div>
     <div id="progress"></div>
+    <div id="img">
+      <img src="piano.png" width="300" height="300">
+    </div>
   </body>
 
   <script type="text/javascript" class="codepen">
+
+    function show_image(src, width, height, alt) {
+    var img = document.createElement("img");
+    img.src = src;
+    img.width = width;
+    img.height = height;
+    img.alt = alt;
+    img.style.visibility = 'visible';
+
+    // img.position = fixed;
+    img.top = 500;
+    img.right = 500;
+
+    // This next line will just add it to the <body> tag
+    document.body.appendChild(img);
+    }
+
+    function image_visible(src, visible) {
+      if (visible) {
+        img.style.visibility = 'visible';
+      }
+      else {
+        img.style.visibility = 'hidden';
+      }
+      
+    }
+    // show_image('piano.png', 300, 300, 'piano');
+    image_visible('piano.png', false);
 
     var output = document.getElementById('output'),
     progress = document.getElementById('progress'); 
@@ -50,6 +83,7 @@
     var riggedHandPlugin;
 
     Leap.loop({background: true}, {
+      
       hand: function(hand){
         var label = hand.data('label');
 
@@ -66,26 +100,22 @@
         });
         // Conducting Check
         if (hand.type == "right" && hand.pinchStrength > 0.75 && hand.confidence > 0.5) {
-          // label.innerHTML = "Conducting";
           output.innerHTML = "Conducting!";
-          // progress.style.width = hand.pinchStrength * 100 + '%';
         }        
+        // Piano Check
         else if ((checkArray[0] || checkArray[1] || checkArray[2] || checkArray[3] || checkArray[4]) && hand.confidence > .5) {
           output.innerHTML = "Piano!";
+          image_visible('piano.png', true);
         }
         else {
           output.innerHTML = "";
+          image_visible('piano.png', false);
         }
 
         if (!label){
 
           label = document.createElement('label');
           document.body.appendChild(label);
-
-          /**
-           * Here we set the label to show the hand type
-           */
-
           hand.data('label', label)
 
         }
@@ -117,8 +147,6 @@
     });
 
     riggedHandPlugin = Leap.loopController.plugins.riggedHand;
-
-    visualizeHand(Leap.loopController.plugins.riggedHand);
 
   </script>
 </html>
