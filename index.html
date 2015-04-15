@@ -49,6 +49,7 @@
 
   <script type="text/javascript" class="codepen">
 
+
     function show_image(src, width, height, alt) {
     var img = document.createElement("img");
     img.src = src;
@@ -82,6 +83,9 @@
 
     var riggedHandPlugin;
 
+    var piano = new Audio('piano.mp3');
+    var orch = new Audio('orchestra.mp3');
+
     Leap.loop({background: true}, {
       
       hand: function(hand){
@@ -101,15 +105,21 @@
         // Conducting Check
         if (hand.type == "right" && hand.pinchStrength > 0.75 && hand.confidence > 0.5) {
           output.innerHTML = "Conducting!";
+          orch.play();
+          piano.pause();
         }        
         // Piano Check
         else if ((checkArray[0] || checkArray[1] || checkArray[2] || checkArray[3] || checkArray[4]) && hand.confidence > .5) {
           output.innerHTML = "Piano!";
           image_visible('piano.png', true);
+          piano.play();
+          orch.pause();
         }
         else {
           output.innerHTML = "";
           image_visible('piano.png', false);
+          piano.pause()
+          orch.pause();
         }
 
         if (!label){
