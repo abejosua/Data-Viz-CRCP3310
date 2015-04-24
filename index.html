@@ -86,10 +86,28 @@
     var piano = new Audio('piano.mp3');
     var orch = new Audio('orchestra.mp3');
 
+    //variables for gestures
+    var circle = 0;
+    var swipe = 0;
+    var screenTap = 0;
+    var keyTap = 0;
+
+    //var controllerOptions = {enableGestures: true};
+
     Leap.loop({background: true}, {
       
       hand: function(hand){
         var label = hand.data('label');
+
+        var violin = false;
+        var conduct = false;
+        var pointer = hand.fingers[1];
+        var middle = hand.fingers[2];
+        if (pointer.tipPosition[1] > middle.tipPosition[1]) {
+          violin = true;
+        } else {
+          conduct = true;
+        }
 
         var checkArray = [false, false, false, false, false]
         var i = 0;
@@ -101,15 +119,23 @@
           else {
             checkArray[i] = false;
           }
+          i++;
         });
         // Conducting Check
-        if (hand.type == "right" && hand.pinchStrength > 0.75 && hand.confidence > 0.5) {
+        if (hand.type == "right" && hand.pinchStrength > 0.75 && hand.confidence > 0.5 && conduct) {
           output.innerHTML = "Conducting!";
           orch.play();
           piano.pause();
-        }        
+        }   
+        // Violin Check 
+        else if (hand.type == "right" && (checkArray[1] && checkArray[2] && checkArray[3] && checkArray[4])
+          && hand.pinchStrength > 0.75 && hand.confidence > 0.5 && violin) {
+          output.innerHTML = "Violin";
+          orch.play();
+          piano.pause();
+        }      
         // Piano Check
-        else if ((checkArray[0] || checkArray[1] || checkArray[2] || checkArray[3] || checkArray[4]) && hand.confidence > .5) {
+        else if ((checkArray[0] && checkArray[1] && checkArray[2] && checkArray[3] && checkArray[4]) && hand.confidence > .5) {
           output.innerHTML = "Piano!";
           image_visible('piano.png', true);
           piano.play();
@@ -121,6 +147,30 @@
           piano.pause()
           orch.pause();
         }
+
+        // if (hand.gestures.length > 0) {
+        //   for (var i = 0; i < hand.gestures.length; i++) {
+        //     var gesture = hand.gestures[i];
+
+        //     switch (gesture.type) {
+        //       case "circle":
+        //         circle += 1;
+        //         break;
+        //       case "swipe":
+        //         swipe += 1;
+        //         break;
+        //       case "screenTap":
+        //         screenTap += 1;
+        //         break;
+        //       case "keyTap":
+        //         keyTap += 1;
+        //         break;
+        //       default:
+        //         break;
+        //     }
+        //   }
+        // }
+        // output.innerHTML = "Circle: " + circle + " Swipe: " + swipe + " Screen Tap: " + screenTap + " Key Tap: " + keyTap;
 
         if (!label){
 

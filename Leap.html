@@ -24,9 +24,9 @@ svg {
 <!-- <button class="randomize">randomize</button> -->
 <!-- Reading Data -->
 <!-- <div id="frameData"></div>
-<div style="clear:both;"></div>
-<div id="handData"></div>
 <div style="clear:both;"></div> -->
+<div id="handData"></div>
+<div style="clear:both;"></div>
 
 <script>
 
@@ -304,6 +304,7 @@ Leap.loop(controllerOptions, function(frame) {
   if (paused) {
     return; // Skip this update
   }
+
   // var frameOutput = document.getElementById("frameData");
 
   var frameString = "Frame ID: " + frame.id  + "<br />"
@@ -316,15 +317,62 @@ Leap.loop(controllerOptions, function(frame) {
   // Frame motion factors
   // frameOutput.innerHTML = "<div style='width:300px; float:left; padding:5px'>" + frameString + "</div>";
 
-// var handOutput = document.getElementById("handData");
+var handOutput = document.getElementById("handData");
   var handString = "";
   // Hand Detection
   if (frame.hands.length > 0) {
-  	handString += "Hand Detected";
+  	handString += "Hand Detected<br>";
   	displayHandRing()
   	// displayHandRing2()
   	for (var i = 0; i < frame.hands.length; i++) {
       var hand = frame.hands[i];
+
+      	var violin = false;
+        var conduct = false;
+        var pointer = hand.fingers[1];
+        var middle = hand.fingers[2];
+        if (pointer.tipPosition[1] > middle.tipPosition[1]) {
+          violin = true;
+        } else {
+          conduct = true;
+        }
+
+        var checkArray = [false, false, false, false, false]
+        var i = 0;
+
+        hand.fingers.forEach(function(finger){
+          if (finger.direction[1] < 0) {
+            checkArray[i] = true;
+          }
+          else {
+            checkArray[i] = false;
+          }
+          i++;
+        });
+        // Conducting Check
+        if (hand.type == "right" && hand.pinchStrength > 0.75 && hand.confidence > 0.5 && conduct) {
+        	handString += "Conducting <br>";
+        }   
+        // Violin Check 
+        if (hand.type == "right" && (checkArray[1] && checkArray[2] && checkArray[3] && checkArray[4])
+          && hand.pinchStrength > 0.75 && hand.confidence > 0.5 && violin) {
+        	handString += "Violin <br>";
+
+        }      
+        // Piano Check
+        if ((checkArray[0] && checkArray[1] && checkArray[2] && checkArray[3] && checkArray[4]) && hand.confidence > .5) {
+        	handString += "Piano <br>";
+        }
+        else {
+        }
+
+
+
+
+
+
+
+
       fillarc(hand.grabStrength, hand.pinchStrength, hand.confidence, frame.gestures.length/5)
   	}
   }
@@ -333,7 +381,7 @@ Leap.loop(controllerOptions, function(frame) {
     handString += "No hands";
     zeroarc()
   }
-  // handOutput.innerHTML = handString;
+  handOutput.innerHTML = handString;
 
 })
 
