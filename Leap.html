@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style>
+
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  width: handRingRadius00px;
+  height: 800px;
+  position: relative;
+}
+
+svg {
+	width: 100%;
+	height: 100%;
+}
+
+</style>
+<head>
+<script src="http://js.leapmotion.com/leap-0.6.3.min.js"></script>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+</head>
+
+<body>
+<!-- <button class="randomize">randomize</button> -->
+<!-- Reading Data -->
+<!-- <div id="frameData"></div>
+<div style="clear:both;"></div>
+<div id="handData"></div>
+<div style="clear:both;"></div> -->
+
+<script>
+
+var svg = d3.select("body")
+	.append("svg")
+
+var minradius = 70;
+var maxradius = 250;
+
+var handRingRadius = 50;
+var handRingRadius2 = 30;
+
+var position1 = "translate(600,300)";
+var position2 = "translate(500,200)";
+
+function degreeToRadians(angle) {
+	return angle * Math.PI/180;
+}
+
+function randomRadius() {
+	return Math.random() * (maxradius-minradius) + minradius;
+}
+
+// Initializing Arcs
+
+var handRing = d3.svg.arc()
+	.innerRadius(minradius-handRingRadius)
+	.outerRadius(minradius-handRingRadius)
+	.startAngle(0)
+	.endAngle(degreeToRadians(360));
+
+// var handRing2 = d3.svg.arc()
+// 	.innerRadius(minradius-handRingRadius)
+// 	.outerRadius(minradius-5)
+// 	.startAngle(0)
+// 	.endAngle(degreeToRadians(0));
+
+var arc1 = d3.svg.arc()
+	.innerRadius(minradius)
+	.outerRadius(minradius+5)
+	.startAngle(0)
+	.endAngle(degreeToRadians(90));
+
+var arc2 = d3.svg.arc()
+	.innerRadius(minradius)
+	.outerRadius(minradius+5)
+	.startAngle(degreeToRadians(90))
+	.endAngle(degreeToRadians(180));
+
+
+var arc3 = d3.svg.arc()
+	.innerRadius(minradius)
+	.outerRadius(minradius+5)
+	.startAngle(degreeToRadians(180))
+	.endAngle(degreeToRadians(270));
+
+var arc4 = d3.svg.arc()
+	.innerRadius(minradius)
+	.outerRadius(minradius+5)
+	.startAngle(degreeToRadians(270))
+	.endAngle(degreeToRadians(360));
+
+var meanarc1 = d3.svg.arc()
+	.innerRadius(minradius)
+	.outerRadius(minradius+5)
+	.startAngle(0)
+	.endAngle(degreeToRadians(90));
+
+var meanarc2 = d3.svg.arc()
+	.innerRadius(minradius)
+	.outerRadius(minradius+5)
+	.startAngle(degreeToRadians(90))
+	.endAngle(degreeToRadians(180));
+
+var meanarc3 = d3.svg.arc()
+	.innerRadius(minradius)
+	.outerRadius(minradius+5)
+	.startAngle(degreeToRadians(180))
+	.endAngle(degreeToRadians(270));
+
+var meanarc4 = d3.svg.arc()
+	.innerRadius(minradius)
+	.outerRadius(minradius+5)
+	.startAngle(degreeToRadians(270))
+	.endAngle(degreeToRadians(360));
+
+// Drawing the arcs to svg
+
+svg.append("path")
+	.style("fill", 'teal')
+	.attr('opacity', 0.5)
+	.attr("class", "handRing")
+	.attr("transform", position1)
+	.attr("d", handRing);
+
+// svg.append("path")
+// 	.style("fill", 'teal')
+// 	.attr('opacity', 0.5)
+// 	.attr("class", "handRing2")
+// 	.attr("transform", position2)
+// 	.attr("d", handRing2);
+
+svg.append("path")
+	.style("fill", 'blue')
+	.attr('opacity', 0.5)
+	.attr("class", "meanarc1")
+	.attr("transform", position1)
+	.attr("d", meanarc1);
+
+svg.append("path")
+	.style("fill", 'blue')
+	.attr('opacity', 0.8)
+	.attr("class", "arc1")
+	.attr("transform", position1)
+	.attr("d", arc1);
+
+svg.append("path")
+	.style("fill", 'red')
+	.attr('opacity', 0.5)
+	.attr("class", "meanarc2")
+	.attr("transform", position1)
+	.attr("d", meanarc2);
+
+svg.append("path")
+	.style("fill", 'red')
+	.attr('opacity', 0.8)
+	.attr("class", "arc2")
+	.attr("transform", position1)
+	.attr("d", arc2);
+
+svg.append("path")
+	.style("fill", 'orange')
+	.attr('opacity', 0.5)
+	.attr("class", "meanarc3")
+	.attr("transform", position1)
+	.attr("d", meanarc3);
+
+svg.append("path")
+	.style("fill", 'orange')
+	.attr('opacity', 0.8)
+	.attr("class", "arc3")
+	.attr("transform", position1)
+	.attr("d", arc3);
+
+svg.append("path")
+	.style("fill", 'purple')
+	.attr('opacity', 0.5)
+	.attr("class", "meanarc4")
+	.attr("transform", position1)
+	.attr("d", meanarc4);
+
+svg.append("path")
+	.style("fill", 'purple')
+	.attr('opacity', 0.8)
+	.attr("class", "arc4")
+	.attr("transform", position1)
+	.attr("d", arc4);
+
+display();
+
+// d3.select(".randomize")
+// 	.on("click", function(){
+// 		arc1.outerRadius(randomRadius());
+// 		arc2.outerRadius(randomRadius());
+// 		arc3.outerRadius(randomRadius());
+// 		arc4.outerRadius(randomRadius());
+// 		meanarc1.outerRadius(randomRadius());
+// 		meanarc2.outerRadius(randomRadius());
+// 		meanarc3.outerRadius(randomRadius());
+// 		meanarc4.outerRadius(randomRadius());
+// 		display();
+// 	});
+
+function randomize() {
+	arc1.outerRadius(randomRadius());
+	arc2.outerRadius(randomRadius());
+	arc3.outerRadius(randomRadius());
+	arc4.outerRadius(randomRadius());
+	meanarc1.outerRadius(randomRadius());
+	meanarc2.outerRadius(randomRadius());
+	meanarc3.outerRadius(randomRadius());
+	meanarc4.outerRadius(randomRadius());
+	display();
+}
+
+function fillarc(r1, r2, r3, r4) {
+	arc1.outerRadius(minradius+((maxradius-minradius)*r1));
+	arc2.outerRadius(minradius+((maxradius-minradius)*r2));
+	arc3.outerRadius(minradius+((maxradius-minradius)*r3));
+	arc4.outerRadius(minradius+((maxradius-minradius)*r4));
+	display();
+}
+
+function zeroarc() {
+	arc1.outerRadius(minradius);
+	arc2.outerRadius(minradius);
+	arc3.outerRadius(minradius);
+	arc4.outerRadius(minradius);
+	handRing.outerRadius(minradius-handRingRadius);
+	// handRing2.endAngle(degreeToRadians(0));
+	display();
+}
+
+function display() {
+	var svg = d3.select("body").transition();
+
+	svg.select(".handRing")
+	.duration(150)
+	.attr("d", handRing)
+
+	// svg.select(".handRing2")
+	// .duration(5)
+	// .attr("d", handRing2)
+
+	svg.select(".arc1")
+	.duration(150)
+	.attr("d", arc1)
+
+	svg.select(".arc2")
+	.duration(150)
+	.attr("d", arc2)
+
+	svg.select(".arc3")
+	.duration(150)
+	.attr("d", arc3)
+
+	svg.select(".arc4")
+	.duration(150)
+	.attr("d", arc4)
+
+	svg.select(".meanarc1")
+	.duration(1000)
+	.attr("d", meanarc1)
+
+	svg.select(".meanarc2")
+	.duration(1000)
+	.attr("d", meanarc2)
+
+	svg.select(".meanarc3")
+	.duration(1000)
+	.attr("d", meanarc3)
+
+	svg.select(".meanarc4")
+	.duration(1000)
+	.attr("d", meanarc4)
+
+	
+}
+
+function displayHandRing() {
+	handRing.outerRadius(minradius-handRingRadius2);
+}
+
+// function displayHandRing2() {
+// 	// handRing2.endAngle(function (x) {
+// 	// 	if (x <= 360) {
+// 	// 		return degreeToRadians(x+1);
+// 	// 	} else {
+// 	// 		return degreeToRadians();
+// 	// 	}
+// 	// });
+// 	handRing2.endAngle(360);
+// }
+
+// Leap Motion Stuff
+// Store frame for motion functions
+var previousFrame = null;
+var paused = false;
+var pauseOnGesture = false;
+
+// Setup Leap loop with frame callback function
+var controllerOptions = {enableGestures: true};
+
+Leap.loop(controllerOptions, function(frame) {
+  if (paused) {
+    return; // Skip this update
+  }
+  // var frameOutput = document.getElementById("frameData");
+
+  var frameString = "Frame ID: " + frame.id  + "<br />"
+                  + "Timestamp: " + frame.timestamp + " &micro;s<br />"
+                  + "Hands: " + frame.hands.length + "<br />"
+                  + "Fingers: " + frame.fingers.length + "<br />"
+                  + "Tools: " + frame.tools.length + "<br />"
+                  + "Gestures: " + frame.gestures.length + "<br />";
+
+  // Frame motion factors
+  // frameOutput.innerHTML = "<div style='width:300px; float:left; padding:5px'>" + frameString + "</div>";
+
+// var handOutput = document.getElementById("handData");
+  var handString = "";
+  // Hand Detection
+  if (frame.hands.length > 0) {
+  	handString += "Hand Detected";
+  	displayHandRing()
+  	// displayHandRing2()
+  	for (var i = 0; i < frame.hands.length; i++) {
+      var hand = frame.hands[i];
+      fillarc(hand.grabStrength, hand.pinchStrength, hand.confidence, frame.gestures.length/5)
+  	}
+  }
+  // Condition where there is No Hands
+  else {
+    handString += "No hands";
+    zeroarc()
+  }
+  // handOutput.innerHTML = handString;
+
+})
+
+</script>
+</body>
