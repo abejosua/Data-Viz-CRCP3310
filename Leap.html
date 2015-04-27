@@ -364,7 +364,6 @@ var handOutput = document.getElementById("handData");
           && hand.pinchStrength > 0.75 && hand.confidence > 0.5 && violin) {
         	checkInstruments[1] = true;
         	// handString += "Violin <br>";
-
         }      
         else {
         	checkInstruments[1] = false;
@@ -378,11 +377,12 @@ var handOutput = document.getElementById("handData");
         	checkInstruments[2] = false;
         }
 
-        if (checkInstruments[0] || checkInstruments[1] || checkInstruments[2]) {
-        	// instrument(s) detected
+        if ((!checkArray[0] && checkArray[1] && checkArray[2] && checkArray[3] && checkArray[4]) && hand.confidence > .5) {
+        	checkInstruments[3] = true;
+        	// handString += "Clarinet <br>";
         }
         else {
-        	// no instrument detected
+        	checkInstruments[3] = false;
         }
 
 
