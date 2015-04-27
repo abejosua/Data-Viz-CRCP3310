@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style>
+
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  width: handRingRadius00px;
+  height: 800px;
+  position: relative;
+}
+
+svg {
+	width: 100%;
+	height: 100%;
+}
+
+</style>
+<head>
+<script src="http://js.leapmotion.com/leap-0.6.3.min.js"></script>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+</head>
+
+<body>
+<!-- <button class="randomize">randomize</button> -->
+<!-- Reading Data -->
+<!-- <div id="frameData"></div>
+<div style="clear:both;"></div> -->
+<div id="handData"></div>
+<div style="clear:both;"></div>
+
+<script>
+
+var svg = d3.select("body")
+	.append("svg")
+
+var minradius = 30;
+var maxradius = 100;
+
+var handRingRadius = 20;
+var handRingRadius2 = 5;
+
+var position1 = "translate(400,500)";
+// var position2 = "translate(500,200)";
+var positionPinch = "translate(400,200)";
+var positionGrab = "translate(800,200)";
+var positionGestures = "translate(800,500)"
+
+function degreeToRadians(angle) {
+	return angle * Math.PI/180;
+}
+
+function randomRadius() {
+	return Math.random() * (maxradius-minradius) + minradius;
+}
+
+// Initializing Arcs
+
+var handRing = d3.svg.arc()
+	.innerRadius(minradius-handRingRadius)
+	.outerRadius(minradius-handRingRadius)
+	.startAngle(0)
+	.endAngle(degreeToRadians(360));
+
+// var handRing2 = d3.svg.arc()
+// 	.innerRadius(minradius-handRingRadius)
+// 	.outerRadius(minradius-5)
+// 	.startAngle(0)
+// 	.endAngle(degreeToRadians(0));
+
+var pinchhandRing = d3.svg.arc()
+	.innerRadius(minradius-handRingRadius)
+	.outerRadius(minradius-handRingRadius)
+	.startAngle(0)
+	.endAngle(degreeToRadians(360));
+
+var arc1 = d3.svg.arc()
+	.innerRadius(minradius)
+	.outerRadius(minradius+5)
+	.startAngle(0)
+	.endAngle(degreeToRadians(90));
+
+var arc2 = d3.svg.arc()
+	.innerRadius(minradius)
+	.outerRadius(minradius+5)
+	.startAngle(degreeToRadians(90))
+	.endAngle(degreeToRadians(180));
+
+
+var arc3 = d3.svg.arc()
+	.innerRadius(minradius)
+	.outerRadius(minradius+5)
+	.startAngle(degreeToRadians(180))
+	.endAngle(degreeToRadians(270));
+
+var arc4 = d3.svg.arc()
+	.innerRadius(minradius)
+	.outerRadius(minradius+5)
+	.startAngle(degreeToRadians(270))
+	.endAngle(degreeToRadians(360));
+
+var meanarc1 = d3.svg.arc()
+	.innerRadius(minradius)
+	.outerRadius(minradius+5)
+	.startAngle(0)
+	.endAngle(degreeToRadians(90));
+
+var meanarc2 = d3.svg.arc()
+	.innerRadius(minradius)
+	.outerRadius(minradius+5)
+	.startAngle(degreeToRadians(90))
+	.endAngle(degreeToRadians(180));
+
+var meanarc3 = d3.svg.arc()
+	.innerRadius(minradius)
+	.outerRadius(minradius+5)
+	.startAngle(degreeToRadians(180))
+	.endAngle(degreeToRadians(270));
+
+var meanarc4 = d3.svg.arc()
+	.innerRadius(minradius)
+	.outerRadius(minradius+5)
+	.startAngle(degreeToRadians(270))
+	.endAngle(degreeToRadians(360));
+
+// pinchStrength variables
+
+var pincharc1 = d3.svg.arc()
+	.innerRadius(minradius)
+	.outerRadius(minradius+5)
+	.startAngle(0)
+	.endAngle(degreeToRadians(90));
+
+var pincharc2 = d3.svg.arc()
+	.innerRadius(minradius)
+	.outerRadius(minradius+5)
+	.startAngle(degreeToRadians(90))
+	.endAngle(degreeToRadians(180));
+
+
+var pincharc3 = d3.svg.arc()
+	.innerRadius(minradius)
+	.outerRadius(minradius+5)
+	.startAngle(degreeToRadians(180))
+	.endAngle(degreeToRadians(270));
+
+var pincharc4 = d3.svg.arc()
+	.innerRadius(minradius)
+	.outerRadius(minradius+5)
+	.startAngle(degreeToRadians(270))
+	.endAngle(degreeToRadians(360));
+
+var pinchmeanarc1 = d3.svg.arc()
+	.innerRadius(minradius)
+	.outerRadius(minradius+5)
+	.startAngle(0)
+	.endAngle(degreeToRadians(90));
+
+var pinchmeanarc2 = d3.svg.arc()
+	.innerRadius(minradius)
+	.outerRadius(minradius+5)
+	.startAngle(degreeToRadians(90))
+	.endAngle(degreeToRadians(180));
+
+var pinchmeanarc3 = d3.svg.arc()
+	.innerRadius(minradius)
+	.outerRadius(minradius+5)
+	.startAngle(degreeToRadians(180))
+	.endAngle(degreeToRadians(270));
+
+var pinchmeanarc4 = d3.svg.arc()
+	.innerRadius(minradius)
+	.outerRadius(minradius+5)
+	.startAngle(degreeToRadians(270))
+	.endAngle(degreeToRadians(360));
+
+// grabStrength variables
+
+var grabarc1 = d3.svg.arc()
+	.innerRadius(minradius)
+	.outerRadius(minradius+5)
+	.startAngle(0)
+	.endAngle(degreeToRadians(90));
+
+var grabarc2 = d3.svg.arc()
+	.innerRadius(minradius)
+	.outerRadius(minradius+5)
+	.startAngle(degreeToRadians(90))
+	.endAngle(degreeToRadians(180));
+
+
+var grabarc3 = d3.svg.arc()
+	.innerRadius(minradius)
+	.outerRadius(minradius+5)
+	.startAngle(degreeToRadians(180))
+	.endAngle(degreeToRadians(270));
+
+var grabarc4 = d3.svg.arc()
+	.innerRadius(minradius)
+	.outerRadius(minradius+5)
+	.startAngle(degreeToRadians(270))
+	.endAngle(degreeToRadians(360));
+
+var grabmeanarc1 = d3.svg.arc()
+	.innerRadius(minradius)
+	.outerRadius(minradius+5)
+	.startAngle(0)
+	.endAngle(degreeToRadians(90));
+
+var grabmeanarc2 = d3.svg.arc()
+	.innerRadius(minradius)
+	.outerRadius(minradius+5)
+	.startAngle(degreeToRadians(90))
+	.endAngle(degreeToRadians(180));
+
+var grabmeanarc3 = d3.svg.arc()
+	.innerRadius(minradius)
+	.outerRadius(minradius+5)
+	.startAngle(degreeToRadians(180))
+	.endAngle(degreeToRadians(270));
+
+var grabmeanarc4 = d3.svg.arc()
+	.innerRadius(minradius)
+	.outerRadius(minradius+5)
+	.startAngle(degreeToRadians(270))
+	.endAngle(degreeToRadians(360));
+
+// Gestures variables
+
+var gesturesarc1 = d3.svg.arc()
+	.innerRadius(minradius)
+	.outerRadius(minradius+5)
+	.startAngle(0)
+	.endAngle(degreeToRadians(90));
+
+var gesturesarc2 = d3.svg.arc()
+	.innerRadius(minradius)
+	.outerRadius(minradius+5)
+	.startAngle(degreeToRadians(90))
+	.endAngle(degreeToRadians(180));
+
+
+var gesturesarc3 = d3.svg.arc()
+	.innerRadius(minradius)
+	.outerRadius(minradius+5)
+	.startAngle(degreeToRadians(180))
+	.endAngle(degreeToRadians(270));
+
+var gesturesarc4 = d3.svg.arc()
+	.innerRadius(minradius)
+	.outerRadius(minradius+5)
+	.startAngle(degreeToRadians(270))
+	.endAngle(degreeToRadians(360));
+
+var gesturesmeanarc1 = d3.svg.arc()
+	.innerRadius(minradius)
+	.outerRadius(minradius+5)
+	.startAngle(0)
+	.endAngle(degreeToRadians(90));
+
+var gesturesmeanarc2 = d3.svg.arc()
+	.innerRadius(minradius)
+	.outerRadius(minradius+5)
+	.startAngle(degreeToRadians(90))
+	.endAngle(degreeToRadians(180));
+
+var gesturesmeanarc3 = d3.svg.arc()
+	.innerRadius(minradius)
+	.outerRadius(minradius+5)
+	.startAngle(degreeToRadians(180))
+	.endAngle(degreeToRadians(270));
+
+var gesturesmeanarc4 = d3.svg.arc()
+	.innerRadius(minradius)
+	.outerRadius(minradius+5)
+	.startAngle(degreeToRadians(270))
+	.endAngle(degreeToRadians(360));
+
+
+// Drawing the arcs to svg
+
+svg.append("path")
+	.style("fill", 'teal')
+	.attr('opacity', 0.5)
+	.attr("class", "handRing")
+	.attr("transform", position1)
+	.attr("d", handRing);
+
+// svg.append("path")
+// 	.style("fill", 'teal')
+// 	.attr('opacity', 0.5)
+// 	.attr("class", "handRing2")
+// 	.attr("transform", position2)
+// 	.attr("d", handRing2);
+
+svg.append("path")
+	.style("fill", 'blue')
+	.attr('opacity', 0.5)
+	.attr("class", "meanarc1")
+	.attr("transform", position1)
+	.attr("d", meanarc1);
+
+svg.append("path")
+	.style("fill", 'blue')
+	.attr('opacity', 0.8)
+	.attr("class", "arc1")
+	.attr("transform", position1)
+	.attr("d", arc1);
+
+svg.append("path")
+	.style("fill", 'red')
+	.attr('opacity', 0.5)
+	.attr("class", "meanarc2")
+	.attr("transform", position1)
+	.attr("d", meanarc2);
+
+svg.append("path")
+	.style("fill", 'red')
+	.attr('opacity', 0.8)
+	.attr("class", "arc2")
+	.attr("transform", position1)
+	.attr("d", arc2);
+
+svg.append("path")
+	.style("fill", 'orange')
+	.attr('opacity', 0.5)
+	.attr("class", "meanarc3")
+	.attr("transform", position1)
+	.attr("d", meanarc3);
+
+svg.append("path")
+	.style("fill", 'orange')
+	.attr('opacity', 0.8)
+	.attr("class", "arc3")
+	.attr("transform", position1)
+	.attr("d", arc3);
+
+svg.append("path")
+	.style("fill", 'purple')
+	.attr('opacity', 0.5)
+	.attr("class", "meanarc4")
+	.attr("transform", position1)
+	.attr("d", meanarc4);
+
+svg.append("path")
+	.style("fill", 'purple')
+	.attr('opacity', 0.8)
+	.attr("class", "arc4")
+	.attr("transform", position1)
+	.attr("d", arc4);
+
+// append pinch circle to svg
+
+svg.append("path")
+	.style("fill", 'blue')
+	.attr('opacity', 0.5)
+	.attr("class", "pinchmeanarc1")
+	.attr("transform", positionPinch)
+	.attr("d", pinchmeanarc1);
+
+svg.append("path")
+	.style("fill", 'blue')
+	.attr('opacity', 0.8)
+	.attr("class", "pincharc1")
+	.attr("transform", positionPinch)
+	.attr("d", pincharc1);
+
+svg.append("path")
+	.style("fill", 'red')
+	.attr('opacity', 0.5)
+	.attr("class", "pinchmeanarc2")
+	.attr("transform", positionPinch)
+	.attr("d", pinchmeanarc2);
+
+svg.append("path")
+	.style("fill", 'red')
+	.attr('opacity', 0.8)
+	.attr("class", "pincharc2")
+	.attr("transform", positionPinch)
+	.attr("d", pincharc2);
+
+svg.append("path")
+	.style("fill", 'orange')
+	.attr('opacity', 0.5)
+	.attr("class", "pinchmeanarc3")
+	.attr("transform", positionPinch)
+	.attr("d", pinchmeanarc3);
+
+svg.append("path")
+	.style("fill", 'orange')
+	.attr('opacity', 0.8)
+	.attr("class", "pincharc3")
+	.attr("transform", positionPinch)
+	.attr("d", pincharc3);
+
+svg.append("path")
+	.style("fill", 'purple')
+	.attr('opacity', 0.5)
+	.attr("class", "pinchmeanarc4")
+	.attr("transform", positionPinch)
+	.attr("d", pinchmeanarc4);
+
+svg.append("path")
+	.style("fill", 'purple')
+	.attr('opacity', 0.8)
+	.attr("class", "pincharc4")
+	.attr("transform", positionPinch)
+	.attr("d", pincharc4);
+
+// append grab circle to svg
+
+svg.append("path")
+	.style("fill", 'blue')
+	.attr('opacity', 0.5)
+	.attr("class", "grabmeanarc1")
+	.attr("transform", positionGrab)
+	.attr("d", grabmeanarc1);
+
+svg.append("path")
+	.style("fill", 'blue')
+	.attr('opacity', 0.8)
+	.attr("class", "grabarc1")
+	.attr("transform", positionGrab)
+	.attr("d", grabarc1);
+
+svg.append("path")
+	.style("fill", 'red')
+	.attr('opacity', 0.5)
+	.attr("class", "grabmeanarc2")
+	.attr("transform", positionGrab)
+	.attr("d", grabmeanarc2);
+
+svg.append("path")
+	.style("fill", 'red')
+	.attr('opacity', 0.8)
+	.attr("class", "grabarc2")
+	.attr("transform", positionGrab)
+	.attr("d", grabarc2);
+
+svg.append("path")
+	.style("fill", 'orange')
+	.attr('opacity', 0.5)
+	.attr("class", "grabmeanarc3")
+	.attr("transform", positionGrab)
+	.attr("d", grabmeanarc3);
+
+svg.append("path")
+	.style("fill", 'orange')
+	.attr('opacity', 0.8)
+	.attr("class", "grabarc3")
+	.attr("transform", positionGrab)
+	.attr("d", grabarc3);
+
+svg.append("path")
+	.style("fill", 'purple')
+	.attr('opacity', 0.5)
+	.attr("class", "grabmeanarc4")
+	.attr("transform", positionGrab)
+	.attr("d", grabmeanarc4);
+
+svg.append("path")
+	.style("fill", 'purple')
+	.attr('opacity', 0.8)
+	.attr("class", "grabarc4")
+	.attr("transform", positionGrab)
+	.attr("d", grabarc4);
+
+// append gestures circle to svg
+
+svg.append("path")
+	.style("fill", 'blue')
+	.attr('opacity', 0.5)
+	.attr("class", "gesturesmeanarc1")
+	.attr("transform", positionGestures)
+	.attr("d", gesturesmeanarc1);
+
+svg.append("path")
+	.style("fill", 'blue')
+	.attr('opacity', 0.8)
+	.attr("class", "gesturesarc1")
+	.attr("transform", positionGestures)
+	.attr("d", gesturesarc1);
+
+svg.append("path")
+	.style("fill", 'red')
+	.attr('opacity', 0.5)
+	.attr("class", "gesturesmeanarc2")
+	.attr("transform", positionGestures)
+	.attr("d", gesturesmeanarc2);
+
+svg.append("path")
+	.style("fill", 'red')
+	.attr('opacity', 0.8)
+	.attr("class", "gesturesarc2")
+	.attr("transform", positionGestures)
+	.attr("d", gesturesarc2);
+
+svg.append("path")
+	.style("fill", 'orange')
+	.attr('opacity', 0.5)
+	.attr("class", "gesturesmeanarc3")
+	.attr("transform", positionGestures)
+	.attr("d", gesturesmeanarc3);
+
+svg.append("path")
+	.style("fill", 'orange')
+	.attr('opacity', 0.8)
+	.attr("class", "gesturesarc3")
+	.attr("transform", positionGestures)
+	.attr("d", gesturesarc3);
+
+svg.append("path")
+	.style("fill", 'purple')
+	.attr('opacity', 0.5)
+	.attr("class", "gesturesmeanarc4")
+	.attr("transform", positionGestures)
+	.attr("d", gesturesmeanarc4);
+
+svg.append("path")
+	.style("fill", 'purple')
+	.attr('opacity', 0.8)
+	.attr("class", "gesturesarc4")
+	.attr("transform", positionGestures)
+	.attr("d", gesturesarc4);
+
+display();
+
+// d3.select(".randomize")
+// 	.on("click", function(){
+// 		arc1.outerRadius(randomRadius());
+// 		arc2.outerRadius(randomRadius());
+// 		arc3.outerRadius(randomRadius());
+// 		arc4.outerRadius(randomRadius());
+// 		meanarc1.outerRadius(randomRadius());
+// 		meanarc2.outerRadius(randomRadius());
+// 		meanarc3.outerRadius(randomRadius());
+// 		meanarc4.outerRadius(randomRadius());
+// 		display();
+// 	});
+
+function randomize() {
+	arc1.outerRadius(randomRadius());
+	arc2.outerRadius(randomRadius());
+	arc3.outerRadius(randomRadius());
+	arc4.outerRadius(randomRadius());
+	meanarc1.outerRadius(randomRadius());
+	meanarc2.outerRadius(randomRadius());
+	meanarc3.outerRadius(randomRadius());
+	meanarc4.outerRadius(randomRadius());
+	display();
+}
+
+function fillarc(r1, r2, r3, r4) {
+	arc1.outerRadius(minradius+((maxradius-minradius)*r1));
+	arc2.outerRadius(minradius+((maxradius-minradius)*r2));
+	arc3.outerRadius(minradius+((maxradius-minradius)*r3));
+	arc4.outerRadius(minradius+((maxradius-minradius)*r4));
+	// display();
+}
+
+function zeroarc() {
+	arc1.outerRadius(minradius);
+	arc2.outerRadius(minradius);
+	arc3.outerRadius(minradius);
+	arc4.outerRadius(minradius);
+	handRing.outerRadius(minradius-handRingRadius);
+
+	pincharc1.outerRadius(minradius);
+	pincharc2.outerRadius(minradius);
+	pincharc3.outerRadius(minradius);
+	pincharc4.outerRadius(minradius);
+
+	grabarc1.outerRadius(minradius);
+	grabarc2.outerRadius(minradius);
+	grabarc3.outerRadius(minradius);
+	grabarc4.outerRadius(minradius);
+
+	gesturesarc1.outerRadius(minradius);
+	gesturesarc2.outerRadius(minradius);
+	gesturesarc3.outerRadius(minradius);
+	gesturesarc4.outerRadius(minradius);
+	// handRing2.endAngle(degreeToRadians(0));
+	// display();
+}
+
+
+
+function display() {
+	var svg = d3.select("body").transition();
+
+	svg.select(".handRing")
+	.duration(150)
+	.attr("d", handRing)
+
+	// svg.select(".handRing2")
+	// .duration(5)
+	// .attr("d", handRing2)
+
+	svg.select(".arc1")
+	.duration(150)
+	.attr("d", arc1)
+
+	svg.select(".arc2")
+	.duration(150)
+	.attr("d", arc2)
+
+	svg.select(".arc3")
+	.duration(150)
+	.attr("d", arc3)
+
+	svg.select(".arc4")
+	.duration(150)
+	.attr("d", arc4)
+
+	svg.select(".meanarc1")
+	.duration(1000)
+	.attr("d", meanarc1)
+
+	svg.select(".meanarc2")
+	.duration(1000)
+	.attr("d", meanarc2)
+
+	svg.select(".meanarc3")
+	.duration(1000)
+	.attr("d", meanarc3)
+
+	svg.select(".meanarc4")
+	.duration(1000)
+	.attr("d", meanarc4)
+
+
+	// display pinch circle
+
+	// svg.select(".pinchhandRing")
+	// .duration(150)
+	// .attr("d", pinchhandRing)
+
+	svg.select(".pincharc1")
+	.duration(150)
+	.attr("d", pincharc1)
+
+	svg.select(".pincharc2")
+	.duration(150)
+	.attr("d", pincharc2)
+
+	svg.select(".pincharc3")
+	.duration(150)
+	.attr("d", pincharc3)
+
+	svg.select(".pincharc4")
+	.duration(150)
+	.attr("d", pincharc4)
+
+	svg.select(".pinchmeanarc1")
+	.duration(300)
+	.attr("d", pinchmeanarc1)
+
+	svg.select(".pinchmeanarc2")
+	.duration(300)
+	.attr("d", pinchmeanarc2)
+
+	svg.select(".pinchmeanarc3")
+	.duration(300)
+	.attr("d", grabmeanarc3)
+
+	svg.select(".pinchmeanarc4")
+	.duration(300)
+	.attr("d", pinchmeanarc4)
+
+	// display grab circle
+
+	// svg.select(".grabhandRing")
+	// .duration(150)
+	// .attr("d", grabhandRing)
+
+	svg.select(".grabarc1")
+	.duration(150)
+	.attr("d", grabarc1)
+
+	svg.select(".grabarc2")
+	.duration(150)
+	.attr("d", grabarc2)
+
+	svg.select(".grabarc3")
+	.duration(150)
+	.attr("d", grabarc3)
+
+	svg.select(".grabarc4")
+	.duration(150)
+	.attr("d", grabarc4)
+
+	svg.select(".grabmeanarc1")
+	.duration(300)
+	.attr("d", grabmeanarc1)
+
+	svg.select(".grabmeanarc2")
+	.duration(300)
+	.attr("d", grabmeanarc2)
+
+	svg.select(".grabmeanarc3")
+	.duration(300)
+	.attr("d", grabmeanarc3)
+
+	svg.select(".grabmeanarc4")
+	.duration(300)
+	.attr("d", grabmeanarc4)
+
+
+	// display gestures circle
+
+	// svg.select(".grabhandRing")
+	// .duration(150)
+	// .attr("d", grabhandRing)
+
+	svg.select(".gesturesarc1")
+	.duration(150)
+	.attr("d", gesturesarc1)
+
+	svg.select(".gesturesarc2")
+	.duration(150)
+	.attr("d", gesturesarc2)
+
+	svg.select(".gesturesarc3")
+	.duration(150)
+	.attr("d", gesturesarc3)
+
+	svg.select(".gesturesarc4")
+	.duration(150)
+	.attr("d", gesturesarc4)
+
+	svg.select(".gesturesmeanarc1")
+	.duration(300)
+	.attr("d", gesturesmeanarc1)
+
+	svg.select(".gesturesmeanarc2")
+	.duration(300)
+	.attr("d", gesturesmeanarc2)
+
+	svg.select(".gesturesmeanarc3")
+	.duration(300)
+	.attr("d", gesturesmeanarc3)
+
+	svg.select(".gesturesmeanarc4")
+	.duration(300)
+	.attr("d", gesturesmeanarc4)
+
+	
+}
+
+function displayHandRing() {
+	handRing.outerRadius(minradius-handRingRadius2);
+}
+
+// function displayHandRing2() {
+// 	// handRing2.endAngle(function (x) {
+// 	// 	if (x <= 360) {
+// 	// 		return degreeToRadians(x+1);
+// 	// 	} else {
+// 	// 		return degreeToRadians();
+// 	// 	}
+// 	// });
+// 	handRing2.endAngle(360);
+// }
+
+function fillPinchArc(r1, r2, r3, r4) {
+	pincharc1.outerRadius(minradius+((maxradius-minradius)*r1));
+	pincharc2.outerRadius(minradius+((maxradius-minradius)*r2));
+	pincharc3.outerRadius(minradius+((maxradius-minradius)*r3));
+	pincharc4.outerRadius(minradius+((maxradius-minradius)*r4));
+	// display();
+}
+
+var pianoPinchTotal = 0;
+var violinPinchTotal = 0;
+var conductPinchTotal = 0;
+var clarinetPinchTotal = 0;
+
+var pianoGrabTotal = 0;
+var violinGrabTotal = 0;
+var conductGrabTotal = 0;
+var clarinetGrabTotal = 0;
+
+var pianoGesturesTotal = 0;
+var violinGesturesTotal = 0;
+var conductGesturesTotal = 0;
+var clarinetGesturesTotal = 0;
+
+var pianoTime = 0;
+var violinTime = 0;
+var conductTime = 0;
+var clarinetTime = 0;
+
+
+function updatePiano(pinchStrength, grabStrength, gestures) {
+	pianoPinchTotal += pinchStrength;
+	pianoGrabTotal += grabStrength;
+	pianoGesturesTotal += gestures;
+
+	pincharc4.outerRadius(minradius+((maxradius-minradius)*pinchStrength));
+	grabarc4.outerRadius(minradius+((maxradius-minradius)*grabStrength));
+	gesturesarc4.outerRadius(minradius+((maxradius-minradius)*(gestures/2)));	
+}
+
+function updateViolin(pinchStrength, grabStrength, gestures) {
+	violinPinchTotal += pinchStrength;
+	violinGrabTotal += grabStrength;
+	violinGesturesTotal += gestures;
+
+	pincharc2.outerRadius(minradius+((maxradius-minradius)*pinchStrength));
+	grabarc2.outerRadius(minradius+((maxradius-minradius)*grabStrength));
+	gesturesarc2.outerRadius(minradius+((maxradius-minradius)*gestures));
+}
+
+function updateConduting(pinchStrength, grabStrength, gestures) {
+	conductPinchTotal += pinchStrength;
+	conductGrabTotal += grabStrength;
+	conductGesturesTotal += gestures;
+
+	pincharc1.outerRadius(minradius+((maxradius-minradius)*pinchStrength));
+	grabarc1.outerRadius(minradius+((maxradius-minradius)*grabStrength));
+	gesturesarc1.outerRadius(minradius+((maxradius-minradius)*gestures));
+}	
+
+function updateClarinet(pinchStrength, grabStrength, gestures) {
+	clarinetPinchTotal += pinchStrength;
+	clarinetGrabTotal += grabStrength;
+	clarinetGesturesTotal += gestures;
+
+	pincharc3.outerRadius(minradius+((maxradius-minradius)*pinchStrength));
+	grabarc3.outerRadius(minradius+((maxradius-minradius)*grabStrength));
+	gesturesarc3.outerRadius(minradius+((maxradius-minradius)*gestures));
+}
+
+function average(total, time) {
+	return total/time;
+}
+
+function maxValue(piano, violin, conduct) {
+	var max = 0;
+	values = [piano, violin, conduct];
+	for (i = 0; i < 3; i++) {
+		if (values[i] > max) {
+			max = values[i];
+		}
+	}
+	return max;
+}
+
+function updatePianoAverage() {
+	if (pianoTime > 0) {
+		var pianoPinchAverage = average(pianoPinchTotal, pianoTime);
+		var pianoGrabAverage = average(pianoGrabTotal, pianoTime);
+		var pianoGesturesAverage = average(pianoGesturesTotal, maxValue(pianoGesturesTotal, violinGesturesTotal, conductGesturesTotal));
+		pinchmeanarc4.outerRadius(minradius+((maxradius-minradius)*pianoPinchAverage));
+		grabmeanarc4.outerRadius(minradius+((maxradius-minradius)*pianoGrabAverage));
+		gesturesmeanarc4.outerRadius(minradius+((maxradius-minradius)*pianoGesturesAverage));
+		// console.log();
+	}	
+}
+
+function updateViolinAverage() {
+	if (violinTime > 0) {
+		var violinPinchAverage = average(violinPinchTotal, violinTime);
+		var violinGrabAverage = average(violinGrabTotal, violinTime);
+		var violinGesturesAverage = average(violinGesturesTotal, maxValue(pianoGesturesTotal, violinGesturesTotal, conductGesturesTotal));
+		pinchmeanarc2.outerRadius(minradius+((maxradius-minradius)*violinPinchAverage));
+		grabmeanarc2.outerRadius(minradius+((maxradius-minradius)*violinGrabAverage));
+		gesturesmeanarc2.outerRadius(minradius+((maxradius-minradius)*violinGesturesAverage));
+		// console.log(violinPinchAverage);
+	}
+	
+}
+
+function updateConductAverage() {
+	if (conductTime > 0) {
+		var conductPinchAverage = average(conductPinchTotal, conductTime);
+		var conductGrabAverage = average(conductGrabTotal, conductTime);
+		var conductGesturesAverage = average(conductGesturesTotal, maxValue(pianoGesturesTotal, violinGesturesTotal, conductGesturesTotal));
+		pinchmeanarc1.outerRadius(minradius+((maxradius-minradius)*conductPinchAverage));
+		grabmeanarc1.outerRadius(minradius+((maxradius-minradius)*conductGrabAverage));
+		gesturesmeanarc1.outerRadius(minradius+((maxradius-minradius)*conductGesturesAverage));
+		// console.log(conductPinchAverage);
+	}
+}
+
+function updateClarinetAverage() {
+	if (clarinetTime > 0) {
+		var clarinetPinchAverage = average(clarinetPinchTotal, clarinetTime);
+		var clarinetGrabAverage = average(clarinetGrabTotal, clarinetTime);
+		var clarinetGesturesAverage = average(clarinetGesturesTotal, maxValue(pianoGesturesTotal, violinGesturesTotal, conductGesturesTotal));
+		pinchmeanarc3.outerRadius(minradius+((maxradius-minradius)*clarinetPinchAverage));
+		grabmeanarc3.outerRadius(minradius+((maxradius-minradius)*clarinetGrabAverage));
+		gesturesmeanarc3.outerRadius(minradius+((maxradius-minradius)*clarinetGesturesAverage));
+		// console.log(conductPinchAverage);
+	}
+}
+// Leap Motion Stuff
+// Store frame for motion functions
+var previousFrame = null;
+var paused = false;
+var pauseOnGesture = false;
+
+// Setup Leap loop with frame callback function
+var controllerOptions = {enableGestures: true};
+
+
+Leap.loop(controllerOptions, function(frame) {
+  if (paused) {
+    return; // Skip this update
+  }
+
+  // var frameOutput = document.getElementById("frameData");
+
+  var frameString = "Frame ID: " + frame.id  + "<br />"
+                  + "Timestamp: " + frame.timestamp + " &micro;s<br />"
+                  + "Hands: " + frame.hands.length + "<br />"
+                  + "Fingers: " + frame.fingers.length + "<br />"
+                  + "Tools: " + frame.tools.length + "<br />"
+                  + "Gestures: " + frame.gestures.length + "<br />";
+
+  // Frame motion factors
+  // frameOutput.innerHTML = "<div style='width:300px; float:left; padding:5px'>" + frameString + "</div>";
+
+var handOutput = document.getElementById("handData");
+  var handString = "";
+  // Hand Detection
+  if (frame.hands.length > 0) {
+  	// handString += "Hand Detected<br>";
+  	displayHandRing()
+  	// displayHandRing2()
+  	for (var i = 0; i < frame.hands.length; i++) {
+      var hand = frame.hands[i];
+
+      	var violin = false;
+        var conduct = false;
+        var pointer = hand.fingers[1];
+        var middle = hand.fingers[2];
+        if (pointer.tipPosition[1] > middle.tipPosition[1]) {
+          violin = true;
+        } else {
+          conduct = true;
+        }
+
+        var checkArray = [false, false, false, false, false]
+        var i = 0;
+
+        var checkInstruments = [false, false, false]
+
+        var pianoPinch = 0;
+        var violinPinch = 0;
+        var conductPinch = 0;
+        var clarinetPinch = 0;
+
+        var pianoGrab = 0;
+        var violinGrab = 0;
+        var conductGrab = 0;
+        var clarinetGrab = 0;
+
+        var pianoGestures = 0;
+        var violinGestures = 0;
+        var conductGestures = 0;
+        var clarinetGestures = 0;
+
+        hand.fingers.forEach(function(finger){
+          if (finger.direction[1] < 0) {
+            checkArray[i] = true;
+          }
+          else {
+            checkArray[i] = false;
+          }
+          i++;
+        });
+        // Conducting Check
+        if (hand.type == "right" && hand.pinchStrength > 0.75 && hand.confidence > 0.5 && conduct) {
+        	checkInstruments[0] = true;
+        	// handString += "Conducting <br>";
+        	conductTime += 1;
+        	conductPinch = hand.pinchStrength;
+        	conductGrab = hand.grabStrength;
+        	conductGestures = frame.gestures.length;
+        }   
+        else {
+        	checkInstruments[0] = false;
+        	updateConductAverage()
+        }
+        // Violin Check 
+        if (hand.type == "right" && (checkArray[1] && checkArray[2] && checkArray[3] && checkArray[4])
+          && hand.pinchStrength > 0.75 && hand.confidence > 0.5 && violin) {
+        	checkInstruments[1] = true;
+        	// handString += "Violin <br>";
+        	violinTime += 1;
+        	violinPinch = hand.pinchStrength;
+        	violinGrab = hand.grabStrength;
+        	violinGestures = frame.gestures.length;
+        }      
+        else {
+        	checkInstruments[1] = false;
+        	updateViolinAverage()
+        }
+        // Piano Check
+        if ((checkArray[0] && checkArray[1] && checkArray[2] && checkArray[3] && checkArray[4]) && hand.confidence > .5) {
+        	checkInstruments[2] = true;
+        	// handString += "Piano <br>";
+        	pianoTime += 1;
+        	pianoPinch = hand.pinchStrength;
+        	pianoGrab = hand.grabStrength;
+        	pianoGestures = frame.gestures.length;
+        }
+        else {
+        	checkInstruments[2] = false;
+        	updatePianoAverage()
+        }
+
+        // Clarinet Check
+        if ((!checkArray[0] && checkArray[1] && checkArray[2] && checkArray[3] && checkArray[4]) && hand.confidence > .5) {
+        	checkInstruments[3] = true;
+        	// handString += "Clarinet <br>";
+        	clarinetTime += 1;
+        	clarinetPinch = hand.pinchStrength;
+        	clarinetGrab = hand.grabStrength;
+        	clarinetGestures = frame.gestures.length;
+        }
+        else {
+        	checkInstruments[3] = false;
+        	updateClarinetAverage()
+        }
+
+        if (checkInstruments[0] || checkInstruments[1] || checkInstruments[2] || checkInstruments[3]) {
+        	// instrument(s) detected
+        }
+        else {
+        	// no instrument detected
+        }
+
+      updatePiano(pianoPinch, pianoGrab, pianoGestures)
+      updateViolin(violinPinch, violinGrab, violinGestures)
+      updateConduting(conductPinch, conductGrab, conductGestures)
+      updateClarinet(clarinetPinch, clarinetGrab, clarinetGestures)
+      fillarc(hand.grabStrength, hand.pinchStrength, hand.confidence, frame.gestures.length/5)
+  	}
+  }
+  // Condition where there is No Hands
+  else {
+    // handString += "No hands";
+    zeroarc()
+  }
+  handOutput.innerHTML = handString;
+  display()
+})
+
+</script>
+</body>
