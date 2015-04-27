@@ -307,12 +307,41 @@ Leap.loop(controllerOptions, function(frame) {
 
   // var frameOutput = document.getElementById("frameData");
 
-  var frameString = "Frame ID: " + frame.id  + "<br />"
-                  + "Timestamp: " + frame.timestamp + " &micro;s<br />"
-                  + "Hands: " + frame.hands.length + "<br />"
-                  + "Fingers: " + frame.fingers.length + "<br />"
-                  + "Tools: " + frame.tools.length + "<br />"
-                  + "Gestures: " + frame.gestures.length + "<br />";
+  // var frameString = "Frame ID: " + frame.id  + "<br />"
+  //                 + "Timestamp: " + frame.timestamp + " &micro;s<br />"
+  //                 + "Hands: " + frame.hands.length + "<br />"
+  //                 + "Fingers: " + frame.fingers.length + "<br />"
+  //                 + "Tools: " + frame.tools.length + "<br />"
+  //                 + "Gestures: " + frame.gestures.length + "<br />";
+
+  	var circle = 0;
+    var swipe = 0;
+    var screenTap = 0;
+    var keyTap = 0;
+
+  if (frame.gestures.length > 0) {
+          for (var i = 0; i < frame.gestures.length; i++) {
+            var gesture = frame.gestures[i];
+
+            switch (gesture.type) {
+              case "circle":
+                circle += 1;
+                break;
+              case "swipe":
+                swipe += 1;
+                break;
+              case "screenTap":
+                screenTap += 1;
+                break;
+              case "keyTap":
+                keyTap += 1;
+                break;
+              default:
+                break;
+            }
+          }
+        }
+        // frameString = "Circle: " + circle + " Swipe: " + swipe + " Screen Tap: " + screenTap + " Key Tap: " + keyTap + <"br /";
 
   // Frame motion factors
   // frameOutput.innerHTML = "<div style='width:300px; float:left; padding:5px'>" + frameString + "</div>";
@@ -384,10 +413,6 @@ var handOutput = document.getElementById("handData");
         else {
         	checkInstruments[3] = false;
         }
-
-
-
-
 
 
       fillarc(hand.grabStrength, hand.pinchStrength, hand.confidence, frame.gestures.length/5)
