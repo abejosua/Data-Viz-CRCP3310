@@ -4,7 +4,7 @@
 
 body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  width: handRingRadius00px;
+  width: 1200px;
   height: 800px;
   position: relative;
 }
@@ -45,6 +45,12 @@ var positionPinch = "translate(400,200)";
 var positionGrab = "translate(800,200)";
 var positionGestures = "translate(800,500)"
 
+var positionPianoDetection = "translate(50,100)";
+var positionConductDetection = "translate(50,200)";
+var positionViolinDetection = "translate(50,300)";
+var positionClarinetDetection = "translate(50,400)";
+var positionHandDetection = "translate(50,500)";
+
 function degreeToRadians(angle) {
 	return angle * Math.PI/180;
 }
@@ -58,6 +64,36 @@ function randomRadius() {
 var handRing = d3.svg.arc()
 	.innerRadius(minradius-handRingRadius)
 	.outerRadius(minradius-handRingRadius)
+	.startAngle(0)
+	.endAngle(degreeToRadians(360));
+
+var pianoCircle = d3.svg.arc()
+	.innerRadius(0)
+	.outerRadius(0)
+	.startAngle(0)
+	.endAngle(degreeToRadians(360));
+
+var conductCircle = d3.svg.arc()
+	.innerRadius(0)
+	.outerRadius(0)
+	.startAngle(0)
+	.endAngle(degreeToRadians(360));
+
+var violinCircle = d3.svg.arc()
+	.innerRadius(0)
+	.outerRadius(0)
+	.startAngle(0)
+	.endAngle(degreeToRadians(360));
+
+var clarinetCircle = d3.svg.arc()
+	.innerRadius(0)
+	.outerRadius(0)
+	.startAngle(0)
+	.endAngle(degreeToRadians(360));
+
+var handCircle = d3.svg.arc()
+	.innerRadius(0)
+	.outerRadius(0)
 	.startAngle(0)
 	.endAngle(degreeToRadians(360));
 
@@ -284,6 +320,41 @@ svg.append("path")
 	.attr("class", "handRing")
 	.attr("transform", position1)
 	.attr("d", handRing);
+
+svg.append("path")
+	.style("fill", 'purple')
+	.attr('opacity', 0.5)
+	.attr("class", "pianoCircle")
+	.attr("transform", positionPianoDetection)
+	.attr("d", pianoCircle);
+
+svg.append("path")
+	.style("fill", 'blue')
+	.attr('opacity', 0.5)
+	.attr("class", "conductCircle")
+	.attr("transform", positionConductDetection)
+	.attr("d", conductCircle);
+
+svg.append("path")
+	.style("fill", 'red')
+	.attr('opacity', 0.5)
+	.attr("class", "violinCircle")
+	.attr("transform", positionViolinDetection)
+	.attr("d", violinCircle);
+
+svg.append("path")
+	.style("fill", 'orange')
+	.attr('opacity', 0.5)
+	.attr("class", "clarinetCircle")
+	.attr("transform", positionClarinetDetection)
+	.attr("d", clarinetCircle);
+
+svg.append("path")
+	.style("fill", 'teal')
+	.attr('opacity', 0.5)
+	.attr("class", "handCircle")
+	.attr("transform", positionHandDetection)
+	.attr("d", handCircle);
 
 // svg.append("path")
 // 	.style("fill", 'teal')
@@ -563,6 +634,7 @@ function zeroarc() {
 	arc3.outerRadius(minradius);
 	arc4.outerRadius(minradius);
 	handRing.outerRadius(minradius-handRingRadius);
+	handCircle.outerRadius(0);
 
 	pincharc1.outerRadius(minradius);
 	pincharc2.outerRadius(minradius);
@@ -590,6 +662,26 @@ function display() {
 	svg.select(".handRing")
 	.duration(150)
 	.attr("d", handRing)
+
+	svg.select(".pianoCircle")
+	.duration(150)
+	.attr("d", pianoCircle)
+
+	svg.select(".violinCircle")
+	.duration(150)
+	.attr("d", violinCircle)
+
+	svg.select(".conductCircle")
+	.duration(150)
+	.attr("d", conductCircle)
+
+	svg.select(".clarinetCircle")
+	.duration(150)
+	.attr("d", clarinetCircle)	
+
+	svg.select(".handCircle")
+	.duration(150)
+	.attr("d", handCircle)	
 
 	// svg.select(".handRing2")
 	// .duration(5)
@@ -651,19 +743,19 @@ function display() {
 	.attr("d", pincharc4)
 
 	svg.select(".pinchmeanarc1")
-	.duration(300)
+	.duration(150)
 	.attr("d", pinchmeanarc1)
 
 	svg.select(".pinchmeanarc2")
-	.duration(300)
+	.duration(150)
 	.attr("d", pinchmeanarc2)
 
 	svg.select(".pinchmeanarc3")
-	.duration(300)
+	.duration(150)
 	.attr("d", grabmeanarc3)
 
 	svg.select(".pinchmeanarc4")
-	.duration(300)
+	.duration(150)
 	.attr("d", pinchmeanarc4)
 
 	// display grab circle
@@ -689,19 +781,19 @@ function display() {
 	.attr("d", grabarc4)
 
 	svg.select(".grabmeanarc1")
-	.duration(300)
+	.duration(150)
 	.attr("d", grabmeanarc1)
 
 	svg.select(".grabmeanarc2")
-	.duration(300)
+	.duration(150)
 	.attr("d", grabmeanarc2)
 
 	svg.select(".grabmeanarc3")
-	.duration(300)
+	.duration(150)
 	.attr("d", grabmeanarc3)
 
 	svg.select(".grabmeanarc4")
-	.duration(300)
+	.duration(150)
 	.attr("d", grabmeanarc4)
 
 
@@ -728,19 +820,19 @@ function display() {
 	.attr("d", gesturesarc4)
 
 	svg.select(".gesturesmeanarc1")
-	.duration(300)
+	.duration(150)
 	.attr("d", gesturesmeanarc1)
 
 	svg.select(".gesturesmeanarc2")
-	.duration(300)
+	.duration(150)
 	.attr("d", gesturesmeanarc2)
 
 	svg.select(".gesturesmeanarc3")
-	.duration(300)
+	.duration(150)
 	.attr("d", gesturesmeanarc3)
 
 	svg.select(".gesturesmeanarc4")
-	.duration(300)
+	.duration(150)
 	.attr("d", gesturesmeanarc4)
 
 	
@@ -748,6 +840,7 @@ function display() {
 
 function displayHandRing() {
 	handRing.outerRadius(minradius-handRingRadius2);
+	handCircle.outerRadius(30);
 }
 
 // function displayHandRing2() {
@@ -797,7 +890,9 @@ function updatePiano(pinchStrength, grabStrength, gestures) {
 
 	pincharc4.outerRadius(minradius+((maxradius-minradius)*pinchStrength));
 	grabarc4.outerRadius(minradius+((maxradius-minradius)*grabStrength));
-	gesturesarc4.outerRadius(minradius+((maxradius-minradius)*(gestures/2)));	
+	gesturesarc4.outerRadius(minradius+((maxradius-minradius)*(gestures/2)));
+
+	// pianoCircle.outerRadius(30);
 }
 
 function updateViolin(pinchStrength, grabStrength, gestures) {
@@ -808,6 +903,8 @@ function updateViolin(pinchStrength, grabStrength, gestures) {
 	pincharc2.outerRadius(minradius+((maxradius-minradius)*pinchStrength));
 	grabarc2.outerRadius(minradius+((maxradius-minradius)*grabStrength));
 	gesturesarc2.outerRadius(minradius+((maxradius-minradius)*gestures));
+
+	// violinCircle.outerRadius(30);
 }
 
 function updateConduting(pinchStrength, grabStrength, gestures) {
@@ -818,6 +915,8 @@ function updateConduting(pinchStrength, grabStrength, gestures) {
 	pincharc1.outerRadius(minradius+((maxradius-minradius)*pinchStrength));
 	grabarc1.outerRadius(minradius+((maxradius-minradius)*grabStrength));
 	gesturesarc1.outerRadius(minradius+((maxradius-minradius)*gestures));
+
+	// conductCircle.outerRadius(30);
 }	
 
 function updateClarinet(pinchStrength, grabStrength, gestures) {
@@ -828,6 +927,8 @@ function updateClarinet(pinchStrength, grabStrength, gestures) {
 	pincharc3.outerRadius(minradius+((maxradius-minradius)*pinchStrength));
 	grabarc3.outerRadius(minradius+((maxradius-minradius)*grabStrength));
 	gesturesarc3.outerRadius(minradius+((maxradius-minradius)*gestures));
+
+	// clarinetCircle.outerRadius(30);
 }
 
 function average(total, time) {
@@ -852,7 +953,7 @@ function updatePianoAverage() {
 		var pianoGesturesAverage = average(pianoGesturesTotal, maxValue(pianoGesturesTotal, violinGesturesTotal, conductGesturesTotal));
 		pinchmeanarc4.outerRadius(minradius+((maxradius-minradius)*pianoPinchAverage));
 		grabmeanarc4.outerRadius(minradius+((maxradius-minradius)*pianoGrabAverage));
-		gesturesmeanarc4.outerRadius(minradius+((maxradius-minradius)*pianoGesturesAverage));
+		// gesturesmeanarc4.outerRadius(minradius+((maxradius-minradius)*pianoGesturesAverage));
 		// console.log();
 	}	
 }
@@ -864,7 +965,7 @@ function updateViolinAverage() {
 		var violinGesturesAverage = average(violinGesturesTotal, maxValue(pianoGesturesTotal, violinGesturesTotal, conductGesturesTotal));
 		pinchmeanarc2.outerRadius(minradius+((maxradius-minradius)*violinPinchAverage));
 		grabmeanarc2.outerRadius(minradius+((maxradius-minradius)*violinGrabAverage));
-		gesturesmeanarc2.outerRadius(minradius+((maxradius-minradius)*violinGesturesAverage));
+		// gesturesmeanarc2.outerRadius(minradius+((maxradius-minradius)*violinGesturesAverage));
 		// console.log(violinPinchAverage);
 	}
 	
@@ -877,7 +978,7 @@ function updateConductAverage() {
 		var conductGesturesAverage = average(conductGesturesTotal, maxValue(pianoGesturesTotal, violinGesturesTotal, conductGesturesTotal));
 		pinchmeanarc1.outerRadius(minradius+((maxradius-minradius)*conductPinchAverage));
 		grabmeanarc1.outerRadius(minradius+((maxradius-minradius)*conductGrabAverage));
-		gesturesmeanarc1.outerRadius(minradius+((maxradius-minradius)*conductGesturesAverage));
+		// gesturesmeanarc1.outerRadius(minradius+((maxradius-minradius)*conductGesturesAverage));
 		// console.log(conductPinchAverage);
 	}
 }
@@ -889,10 +990,46 @@ function updateClarinetAverage() {
 		var clarinetGesturesAverage = average(clarinetGesturesTotal, maxValue(pianoGesturesTotal, violinGesturesTotal, conductGesturesTotal));
 		pinchmeanarc3.outerRadius(minradius+((maxradius-minradius)*clarinetPinchAverage));
 		grabmeanarc3.outerRadius(minradius+((maxradius-minradius)*clarinetGrabAverage));
-		gesturesmeanarc3.outerRadius(minradius+((maxradius-minradius)*clarinetGesturesAverage));
+		// gesturesmeanarc3.outerRadius(minradius+((maxradius-minradius)*clarinetGesturesAverage));
 		// console.log(conductPinchAverage);
 	}
 }
+
+function pianoDetected() {
+	pianoCircle.outerRadius(30);
+	console.log("piano detected");
+}
+
+function violinDetected() {
+	violinCircle.outerRadius(30);
+}
+
+function conductDetected() {
+	conductCircle.outerRadius(30);
+}
+
+function clarinetDetected() {
+	clarinetCircle.outerRadius(30);
+}
+
+function pianoNotDetected() {
+	pianoCircle.outerRadius(0);
+	console.log("piano not detected");
+}
+
+function violinNotDetected() {
+	violinCircle.outerRadius(0);
+}
+
+function conductNotDetected() {
+	conductCircle.outerRadius(0);
+}
+
+function clarinetNotDetected() {
+	clarinetCircle.outerRadius(0);
+}
+
+
 // Leap Motion Stuff
 // Store frame for motion functions
 var previousFrame = null;
@@ -901,6 +1038,12 @@ var pauseOnGesture = false;
 
 // Setup Leap loop with frame callback function
 var controllerOptions = {enableGestures: true};
+
+//NEW
+var pianoTimer = 0;
+var violinTimer = 0;
+var conductTimer = 0;
+var clarinetTimer = 0;
 
 
 Leap.loop(controllerOptions, function(frame) {
@@ -961,11 +1104,7 @@ var handOutput = document.getElementById("handData");
         var clarinetGestures = 0;
 
 
-//NEW
-        var pianoTimer = 0;
-        var violinTimer = 0;
-        var conductTimer = 0;
-        var clarinetTimer = 0;
+
 
         hand.fingers.forEach(function(finger){
           if (finger.direction[1] < 0) {
@@ -985,14 +1124,17 @@ var handOutput = document.getElementById("handData");
         	conductGrab = hand.grabStrength;
         	conductGestures = frame.gestures.length;
         	conductTimer = 0;
+        	conductDetected()
         }   
         else {
-        	// if (conductTimer >= 5) {
+        	if (conductTimer >= 5) {
         		checkInstruments[0] = false;
-        		updateConductAverage()
-        // 	} else{
-        // 		conductTimer++;
-        // 	}
+        		conductNotDetected()
+        		
+        	} else{
+        		conductTimer++;
+        		conductDetected()
+        	}
 
         }
         // Violin Check 
@@ -1005,18 +1147,21 @@ var handOutput = document.getElementById("handData");
         	violinGrab = hand.grabStrength;
         	violinGestures = frame.gestures.length;
         	violinTimer = 0;
+        	violinDetected()
         }      
         else {
-        	// if (violinTimer >= 5) {
+        	if (violinTimer >= 5) {
         		checkInstruments[1] = false;
-        		updateViolinAverage()
-        	// } else {
-        	// 	violinTimer++;
+        		violinNotDetected()
+        		
+        	} else {
+        		violinTimer++;
+        		violinDetected()
         	// 	violinTime += 1;
-        	// violinPinch = hand.pinchStrength;
-        	// violinGrab = hand.grabStrength;
-        	// violinGestures = frame.gestures.length;  ///NEW TRYING TO MAKE WORK :( )
-        	// }
+        	// 	violinPinch = hand.pinchStrength;
+        	// 	violinGrab = hand.grabStrength;
+        	// 	violinGestures = frame.gestures.length;  ///NEW TRYING TO MAKE WORK :( )
+        	}
         }
         // Piano Check
         if ((checkArray[0] && checkArray[1] && checkArray[2] && checkArray[3] && checkArray[4]) && hand.confidence > .5) {
@@ -1027,14 +1172,20 @@ var handOutput = document.getElementById("handData");
         	pianoGrab = hand.grabStrength;
         	pianoGestures = frame.gestures.length;
         	pianoTimer = 0;
+        	pianoDetected()
+        	// console.log("piano detected");
         }
         else {
-        	// if (pianoTimer >= 5) {
+        	if (pianoTimer >= 5) {
         		checkInstruments[2] = false;
-        		updatePianoAverage()
-        // 	} else {
-        // 		pianoTimer++;
-        // 	}
+        		pianoNotDetected()
+        		// console.log("piano not detected");
+        	} else {
+        		pianoTimer++;
+        		pianoDetected()
+        		// console.log("piano timer");
+        		// console.log(pianoTimer);
+        	}
         }
 
         // Clarinet Check
@@ -1046,13 +1197,16 @@ var handOutput = document.getElementById("handData");
         	clarinetGrab = hand.grabStrength;
         	clarinetGestures = frame.gestures.length;
         	clarinetTimer = 0;
+        	clarinetDetected()
         }
         else {
         	if (clarinetTimer >= 5) {
         		checkInstruments[3] = false;
-        		updateClarinetAverage()
+        		clarinetNotDetected()
+        		
         	} else {
         		clarinetTimer++;
+        		clarinetDetected()
         	}
         }
 
@@ -1074,6 +1228,14 @@ var handOutput = document.getElementById("handData");
   else {
     // handString += "No hands";
     zeroarc()
+    pianoNotDetected()
+    conductNotDetected()
+    violinNotDetected()
+    clarinetNotDetected()
+    updateConductAverage()
+	updateViolinAverage()
+	updatePianoAverage()
+	updateClarinetAverage()
   }
   handOutput.innerHTML = handString;
   display()
