@@ -960,6 +960,13 @@ var handOutput = document.getElementById("handData");
         var conductGestures = 0;
         var clarinetGestures = 0;
 
+
+//NEW
+        var pianoTimer = 0;
+        var violinTimer = 0;
+        var conductTimer = 0;
+        var clarinetTimer = 0;
+
         hand.fingers.forEach(function(finger){
           if (finger.direction[1] < 0) {
             checkArray[i] = true;
@@ -977,10 +984,16 @@ var handOutput = document.getElementById("handData");
         	conductPinch = hand.pinchStrength;
         	conductGrab = hand.grabStrength;
         	conductGestures = frame.gestures.length;
+        	conductTimer = 0;
         }   
         else {
-        	checkInstruments[0] = false;
-        	updateConductAverage()
+        	// if (conductTimer >= 5) {
+        		checkInstruments[0] = false;
+        		updateConductAverage()
+        // 	} else{
+        // 		conductTimer++;
+        // 	}
+
         }
         // Violin Check 
         if (hand.type == "right" && (checkArray[1] && checkArray[2] && checkArray[3] && checkArray[4])
@@ -991,10 +1004,19 @@ var handOutput = document.getElementById("handData");
         	violinPinch = hand.pinchStrength;
         	violinGrab = hand.grabStrength;
         	violinGestures = frame.gestures.length;
+        	violinTimer = 0;
         }      
         else {
-        	checkInstruments[1] = false;
-        	updateViolinAverage()
+        	// if (violinTimer >= 5) {
+        		checkInstruments[1] = false;
+        		updateViolinAverage()
+        	// } else {
+        	// 	violinTimer++;
+        	// 	violinTime += 1;
+        	// violinPinch = hand.pinchStrength;
+        	// violinGrab = hand.grabStrength;
+        	// violinGestures = frame.gestures.length;  ///NEW TRYING TO MAKE WORK :( )
+        	// }
         }
         // Piano Check
         if ((checkArray[0] && checkArray[1] && checkArray[2] && checkArray[3] && checkArray[4]) && hand.confidence > .5) {
@@ -1004,10 +1026,15 @@ var handOutput = document.getElementById("handData");
         	pianoPinch = hand.pinchStrength;
         	pianoGrab = hand.grabStrength;
         	pianoGestures = frame.gestures.length;
+        	pianoTimer = 0;
         }
         else {
-        	checkInstruments[2] = false;
-        	updatePianoAverage()
+        	// if (pianoTimer >= 5) {
+        		checkInstruments[2] = false;
+        		updatePianoAverage()
+        // 	} else {
+        // 		pianoTimer++;
+        // 	}
         }
 
         // Clarinet Check
@@ -1018,10 +1045,15 @@ var handOutput = document.getElementById("handData");
         	clarinetPinch = hand.pinchStrength;
         	clarinetGrab = hand.grabStrength;
         	clarinetGestures = frame.gestures.length;
+        	clarinetTimer = 0;
         }
         else {
-        	checkInstruments[3] = false;
-        	updateClarinetAverage()
+        	if (clarinetTimer >= 5) {
+        		checkInstruments[3] = false;
+        		updateClarinetAverage()
+        	} else {
+        		clarinetTimer++;
+        	}
         }
 
         if (checkInstruments[0] || checkInstruments[1] || checkInstruments[2] || checkInstruments[3]) {
