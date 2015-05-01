@@ -14,6 +14,14 @@ svg {
 	height: 100%;
 }
 
+.labels {
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	width: 1200px;
+	height: 1200px;
+}
+
+
+
 </style>
 <head>
 <script src="http://js.leapmotion.com/leap-0.6.3.min.js"></script>
@@ -323,38 +331,81 @@ svg.append("path")
 
 svg.append("path")
 	.style("fill", 'purple')
-	.attr('opacity', 0.5)
+	.attr('opacity', 0.8)
 	.attr("class", "pianoCircle")
 	.attr("transform", positionPianoDetection)
 	.attr("d", pianoCircle);
 
 svg.append("path")
 	.style("fill", 'blue')
-	.attr('opacity', 0.5)
+	.attr('opacity', 0.8)
 	.attr("class", "conductCircle")
 	.attr("transform", positionConductDetection)
 	.attr("d", conductCircle);
 
 svg.append("path")
 	.style("fill", 'red')
-	.attr('opacity', 0.5)
+	.attr('opacity', 0.8)
 	.attr("class", "violinCircle")
 	.attr("transform", positionViolinDetection)
 	.attr("d", violinCircle);
 
 svg.append("path")
 	.style("fill", 'orange')
-	.attr('opacity', 0.5)
+	.attr('opacity', 0.8)
 	.attr("class", "clarinetCircle")
 	.attr("transform", positionClarinetDetection)
 	.attr("d", clarinetCircle);
 
 svg.append("path")
 	.style("fill", 'teal')
-	.attr('opacity', 0.5)
+	.attr('opacity', 0.8)
 	.attr("class", "handCircle")
 	.attr("transform", positionHandDetection)
 	.attr("d", handCircle);
+
+var imgs = svg.selectAll("image").data([0]);
+imgs.enter()
+    .append("svg:image")
+    .attr("xlink:href", "hand.png")
+    .attr("width", 40)
+	.attr("height", 40)
+	.attr("x", 30)
+	.attr("y", 480);
+
+imgs.enter()
+    .append("svg:image")
+    .attr("xlink:href", "piano.png")
+    .attr("width", 40)
+	.attr("height", 40)
+	.attr("x", 30)
+	.attr("y", 80);
+
+imgs.enter()
+    .append("svg:image")
+    .attr("xlink:href", "clarinet.png")
+    .attr("width", 40)
+	.attr("height", 40)
+	.attr("x", 30)
+	.attr("y", 380);
+
+imgs.enter()
+    .append("svg:image")
+    .attr("xlink:href", "violin.png")
+    .attr("width", 40)
+	.attr("height", 40)
+	.attr("x", 30)
+	.attr("y", 280);
+
+
+// svg.append("path")
+// 	.style("fill", 'white')
+// 	.attr('opacity', 1)
+// 	.attr("class", "letter")
+// 	.attr("transform", positionHandDetection)
+
+
+
 
 // svg.append("path")
 // 	.style("fill", 'teal')
@@ -593,6 +644,7 @@ svg.append("path")
 	.attr("transform", positionGestures)
 	.attr("d", gesturesarc4);
 
+
 display();
 
 // d3.select(".randomize")
@@ -654,6 +706,7 @@ function zeroarc() {
 	// display();
 }
 
+var confidenceOpacity = 0.5;
 
 
 function display() {
@@ -666,22 +719,30 @@ function display() {
 	svg.select(".pianoCircle")
 	.duration(150)
 	.attr("d", pianoCircle)
+	.attr("opacity", confidenceOpacity)
 
 	svg.select(".violinCircle")
 	.duration(150)
 	.attr("d", violinCircle)
+	.attr("opacity", confidenceOpacity)
 
 	svg.select(".conductCircle")
 	.duration(150)
 	.attr("d", conductCircle)
+	.attr("opacity", confidenceOpacity)
 
 	svg.select(".clarinetCircle")
 	.duration(150)
 	.attr("d", clarinetCircle)	
+	.attr("opacity", confidenceOpacity)
 
 	svg.select(".handCircle")
 	.duration(150)
 	.attr("d", handCircle)	
+	.attr("opacity", confidenceOpacity)
+
+
+	//drawing lettters
 
 	// svg.select(".handRing2")
 	// .duration(5)
@@ -882,11 +943,17 @@ var violinTime = 0;
 var conductTime = 0;
 var clarinetTime = 0;
 
+function updateConfidence(confidence) {
+	confidenceOpacity = confidence;
+}
 
 function updatePiano(pinchStrength, grabStrength, gestures) {
 	pianoPinchTotal += pinchStrength;
 	pianoGrabTotal += grabStrength;
-	pianoGesturesTotal += gestures;
+	if (gestures > 0) {
+		pianoGesturesTotal += gestures;
+	}
+	
 
 	pincharc4.outerRadius(minradius+((maxradius-minradius)*pinchStrength));
 	grabarc4.outerRadius(minradius+((maxradius-minradius)*grabStrength));
@@ -898,8 +965,9 @@ function updatePiano(pinchStrength, grabStrength, gestures) {
 function updateViolin(pinchStrength, grabStrength, gestures) {
 	violinPinchTotal += pinchStrength;
 	violinGrabTotal += grabStrength;
-	violinGesturesTotal += gestures;
-
+	if (gestures > 0) {
+		violinGesturesTotal += gestures;
+	}
 	pincharc2.outerRadius(minradius+((maxradius-minradius)*pinchStrength));
 	grabarc2.outerRadius(minradius+((maxradius-minradius)*grabStrength));
 	gesturesarc2.outerRadius(minradius+((maxradius-minradius)*gestures));
@@ -910,7 +978,9 @@ function updateViolin(pinchStrength, grabStrength, gestures) {
 function updateConduting(pinchStrength, grabStrength, gestures) {
 	conductPinchTotal += pinchStrength;
 	conductGrabTotal += grabStrength;
-	conductGesturesTotal += gestures;
+	if (gestures > 0) {
+		conductGesturesTotal += gestures;
+	}
 
 	pincharc1.outerRadius(minradius+((maxradius-minradius)*pinchStrength));
 	grabarc1.outerRadius(minradius+((maxradius-minradius)*grabStrength));
@@ -922,7 +992,9 @@ function updateConduting(pinchStrength, grabStrength, gestures) {
 function updateClarinet(pinchStrength, grabStrength, gestures) {
 	clarinetPinchTotal += pinchStrength;
 	clarinetGrabTotal += grabStrength;
-	clarinetGesturesTotal += gestures;
+	if (gestures > 0) {
+		clarinetGesturesTotal += gestures;
+	}
 
 	pincharc3.outerRadius(minradius+((maxradius-minradius)*pinchStrength));
 	grabarc3.outerRadius(minradius+((maxradius-minradius)*grabStrength));
@@ -953,7 +1025,7 @@ function updatePianoAverage() {
 		var pianoGesturesAverage = average(pianoGesturesTotal, maxValue(pianoGesturesTotal, violinGesturesTotal, conductGesturesTotal));
 		pinchmeanarc4.outerRadius(minradius+((maxradius-minradius)*pianoPinchAverage));
 		grabmeanarc4.outerRadius(minradius+((maxradius-minradius)*pianoGrabAverage));
-		// gesturesmeanarc4.outerRadius(minradius+((maxradius-minradius)*pianoGesturesAverage));
+		gesturesmeanarc4.outerRadius(minradius+((maxradius-minradius)*pianoGesturesAverage));
 		// console.log();
 	}	
 }
@@ -965,7 +1037,7 @@ function updateViolinAverage() {
 		var violinGesturesAverage = average(violinGesturesTotal, maxValue(pianoGesturesTotal, violinGesturesTotal, conductGesturesTotal));
 		pinchmeanarc2.outerRadius(minradius+((maxradius-minradius)*violinPinchAverage));
 		grabmeanarc2.outerRadius(minradius+((maxradius-minradius)*violinGrabAverage));
-		// gesturesmeanarc2.outerRadius(minradius+((maxradius-minradius)*violinGesturesAverage));
+		gesturesmeanarc2.outerRadius(minradius+((maxradius-minradius)*violinGesturesAverage));
 		// console.log(violinPinchAverage);
 	}
 	
@@ -978,7 +1050,7 @@ function updateConductAverage() {
 		var conductGesturesAverage = average(conductGesturesTotal, maxValue(pianoGesturesTotal, violinGesturesTotal, conductGesturesTotal));
 		pinchmeanarc1.outerRadius(minradius+((maxradius-minradius)*conductPinchAverage));
 		grabmeanarc1.outerRadius(minradius+((maxradius-minradius)*conductGrabAverage));
-		// gesturesmeanarc1.outerRadius(minradius+((maxradius-minradius)*conductGesturesAverage));
+		gesturesmeanarc1.outerRadius(minradius+((maxradius-minradius)*conductGesturesAverage));
 		// console.log(conductPinchAverage);
 	}
 }
@@ -990,14 +1062,14 @@ function updateClarinetAverage() {
 		var clarinetGesturesAverage = average(clarinetGesturesTotal, maxValue(pianoGesturesTotal, violinGesturesTotal, conductGesturesTotal));
 		pinchmeanarc3.outerRadius(minradius+((maxradius-minradius)*clarinetPinchAverage));
 		grabmeanarc3.outerRadius(minradius+((maxradius-minradius)*clarinetGrabAverage));
-		// gesturesmeanarc3.outerRadius(minradius+((maxradius-minradius)*clarinetGesturesAverage));
+		gesturesmeanarc3.outerRadius(minradius+((maxradius-minradius)*clarinetGesturesAverage));
 		// console.log(conductPinchAverage);
 	}
 }
 
 function pianoDetected() {
 	pianoCircle.outerRadius(30);
-	console.log("piano detected");
+	// console.log("piano detected");
 }
 
 function violinDetected() {
@@ -1014,7 +1086,7 @@ function clarinetDetected() {
 
 function pianoNotDetected() {
 	pianoCircle.outerRadius(0);
-	console.log("piano not detected");
+	// console.log("piano not detected");
 }
 
 function violinNotDetected() {
@@ -1222,6 +1294,7 @@ var handOutput = document.getElementById("handData");
       updateConduting(conductPinch, conductGrab, conductGestures)
       updateClarinet(clarinetPinch, clarinetGrab, clarinetGestures)
       fillarc(hand.grabStrength, hand.pinchStrength, hand.confidence, frame.gestures.length/5)
+      updateConfidence(hand.confidence)
   	}
   }
   // Condition where there is No Hands
