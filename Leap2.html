@@ -29,10 +29,6 @@ svg {
 </head>
 
 <body>
-<!-- <button class="randomize">randomize</button> -->
-<!-- Reading Data -->
-<!-- <div id="frameData"></div>
-<div style="clear:both;"></div> -->
 <div id="handData"></div>
 <div style="clear:both;"></div>
 
@@ -48,10 +44,9 @@ var handRingRadius = 20;
 var handRingRadius2 = 5;
 
 var position1 = "translate(400,500)";
-// var position2 = "translate(500,200)";
 var positionPinch = "translate(400,200)";
 var positionGrab = "translate(800,200)";
-var positionGestures = "translate(800,500)"
+var positionGestures = "translate(600,500)"
 
 var positionPianoDetection = "translate(50,100)";
 var positionConductDetection = "translate(50,200)";
@@ -69,11 +64,11 @@ function randomRadius() {
 
 // Initializing Arcs
 
-var handRing = d3.svg.arc()
-	.innerRadius(minradius-handRingRadius)
-	.outerRadius(minradius-handRingRadius)
-	.startAngle(0)
-	.endAngle(degreeToRadians(360));
+// var handRing = d3.svg.arc()
+// 	.innerRadius(minradius-handRingRadius)
+// 	.outerRadius(minradius-handRingRadius)
+// 	.startAngle(0)
+// 	.endAngle(degreeToRadians(360));
 
 var pianoCircle = d3.svg.arc()
 	.innerRadius(0)
@@ -117,54 +112,54 @@ var pinchhandRing = d3.svg.arc()
 	.startAngle(0)
 	.endAngle(degreeToRadians(360));
 
-var arc1 = d3.svg.arc()
-	.innerRadius(minradius)
-	.outerRadius(minradius+5)
-	.startAngle(0)
-	.endAngle(degreeToRadians(90));
+// var arc1 = d3.svg.arc()
+// 	.innerRadius(minradius)
+// 	.outerRadius(minradius+5)
+// 	.startAngle(0)
+// 	.endAngle(degreeToRadians(90));
 
-var arc2 = d3.svg.arc()
-	.innerRadius(minradius)
-	.outerRadius(minradius+5)
-	.startAngle(degreeToRadians(90))
-	.endAngle(degreeToRadians(180));
+// var arc2 = d3.svg.arc()
+// 	.innerRadius(minradius)
+// 	.outerRadius(minradius+5)
+// 	.startAngle(degreeToRadians(90))
+// 	.endAngle(degreeToRadians(180));
 
 
-var arc3 = d3.svg.arc()
-	.innerRadius(minradius)
-	.outerRadius(minradius+5)
-	.startAngle(degreeToRadians(180))
-	.endAngle(degreeToRadians(270));
+// var arc3 = d3.svg.arc()
+// 	.innerRadius(minradius)
+// 	.outerRadius(minradius+5)
+// 	.startAngle(degreeToRadians(180))
+// 	.endAngle(degreeToRadians(270));
 
-var arc4 = d3.svg.arc()
-	.innerRadius(minradius)
-	.outerRadius(minradius+5)
-	.startAngle(degreeToRadians(270))
-	.endAngle(degreeToRadians(360));
+// var arc4 = d3.svg.arc()
+// 	.innerRadius(minradius)
+// 	.outerRadius(minradius+5)
+// 	.startAngle(degreeToRadians(270))
+// 	.endAngle(degreeToRadians(360));
 
-var meanarc1 = d3.svg.arc()
-	.innerRadius(minradius)
-	.outerRadius(minradius+5)
-	.startAngle(0)
-	.endAngle(degreeToRadians(90));
+// var meanarc1 = d3.svg.arc()
+// 	.innerRadius(minradius)
+// 	.outerRadius(minradius+5)
+// 	.startAngle(0)
+// 	.endAngle(degreeToRadians(90));
 
-var meanarc2 = d3.svg.arc()
-	.innerRadius(minradius)
-	.outerRadius(minradius+5)
-	.startAngle(degreeToRadians(90))
-	.endAngle(degreeToRadians(180));
+// var meanarc2 = d3.svg.arc()
+// 	.innerRadius(minradius)
+// 	.outerRadius(minradius+5)
+// 	.startAngle(degreeToRadians(90))
+// 	.endAngle(degreeToRadians(180));
 
-var meanarc3 = d3.svg.arc()
-	.innerRadius(minradius)
-	.outerRadius(minradius+5)
-	.startAngle(degreeToRadians(180))
-	.endAngle(degreeToRadians(270));
+// var meanarc3 = d3.svg.arc()
+// 	.innerRadius(minradius)
+// 	.outerRadius(minradius+5)
+// 	.startAngle(degreeToRadians(180))
+// 	.endAngle(degreeToRadians(270));
 
-var meanarc4 = d3.svg.arc()
-	.innerRadius(minradius)
-	.outerRadius(minradius+5)
-	.startAngle(degreeToRadians(270))
-	.endAngle(degreeToRadians(360));
+// var meanarc4 = d3.svg.arc()
+// 	.innerRadius(minradius)
+// 	.outerRadius(minradius+5)
+// 	.startAngle(degreeToRadians(270))
+// 	.endAngle(degreeToRadians(360));
 
 // pinchStrength variables
 
@@ -322,12 +317,12 @@ var gesturesmeanarc4 = d3.svg.arc()
 
 // Drawing the arcs to svg
 
-svg.append("path")
-	.style("fill", 'teal')
-	.attr('opacity', 0.5)
-	.attr("class", "handRing")
-	.attr("transform", position1)
-	.attr("d", handRing);
+// svg.append("path")
+// 	.style("fill", 'teal')
+// 	.attr('opacity', 0.5)
+// 	.attr("class", "handRing")
+// 	.attr("transform", position1)
+// 	.attr("d", handRing);
 
 svg.append("path")
 	.style("fill", 'purple')
@@ -363,6 +358,28 @@ svg.append("path")
 	.attr("class", "handCircle")
 	.attr("transform", positionHandDetection)
 	.attr("d", handCircle);
+
+svg.append("path")
+	.style("fill", 'black')
+	.attr('opacity', 0.8)
+	.attr("class", "fistCircle")
+	.attr("transform", "translate(800,200)")
+	.attr("d", handCircle);
+
+svg.append("path")
+	.style("fill", 'black')
+	.attr('opacity', 0.8)
+	.attr("class", "pinchCircle")
+	.attr("transform", "translate(400,200)")
+	.attr("d", handCircle);
+
+svg.append("path")
+	.style("fill", 'black')
+	.attr('opacity', 0.8)
+	.attr("class", "gesturesCircle")
+	.attr("transform", "translate(600,500)")
+	.attr("d", handCircle);
+
 
 var imgs = svg.selectAll("image").data([0]);
 imgs.enter()
@@ -439,61 +456,61 @@ imgs.enter()
 // 	.attr("transform", position2)
 // 	.attr("d", handRing2);
 
-svg.append("path")
-	.style("fill", 'blue')
-	.attr('opacity', 0.5)
-	.attr("class", "meanarc1")
-	.attr("transform", position1)
-	.attr("d", meanarc1);
+// svg.append("path")
+// 	.style("fill", 'blue')
+// 	.attr('opacity', 0.5)
+// 	.attr("class", "meanarc1")
+// 	.attr("transform", position1)
+// 	.attr("d", meanarc1);
 
-svg.append("path")
-	.style("fill", 'blue')
-	.attr('opacity', 0.8)
-	.attr("class", "arc1")
-	.attr("transform", position1)
-	.attr("d", arc1);
+// svg.append("path")
+// 	.style("fill", 'blue')
+// 	.attr('opacity', 0.8)
+// 	.attr("class", "arc1")
+// 	.attr("transform", position1)
+// 	.attr("d", arc1);
 
-svg.append("path")
-	.style("fill", 'red')
-	.attr('opacity', 0.5)
-	.attr("class", "meanarc2")
-	.attr("transform", position1)
-	.attr("d", meanarc2);
+// svg.append("path")
+// 	.style("fill", 'red')
+// 	.attr('opacity', 0.5)
+// 	.attr("class", "meanarc2")
+// 	.attr("transform", position1)
+// 	.attr("d", meanarc2);
 
-svg.append("path")
-	.style("fill", 'red')
-	.attr('opacity', 0.8)
-	.attr("class", "arc2")
-	.attr("transform", position1)
-	.attr("d", arc2);
+// svg.append("path")
+// 	.style("fill", 'red')
+// 	.attr('opacity', 0.8)
+// 	.attr("class", "arc2")
+// 	.attr("transform", position1)
+// 	.attr("d", arc2);
 
-svg.append("path")
-	.style("fill", 'orange')
-	.attr('opacity', 0.5)
-	.attr("class", "meanarc3")
-	.attr("transform", position1)
-	.attr("d", meanarc3);
+// svg.append("path")
+// 	.style("fill", 'orange')
+// 	.attr('opacity', 0.5)
+// 	.attr("class", "meanarc3")
+// 	.attr("transform", position1)
+// 	.attr("d", meanarc3);
 
-svg.append("path")
-	.style("fill", 'orange')
-	.attr('opacity', 0.8)
-	.attr("class", "arc3")
-	.attr("transform", position1)
-	.attr("d", arc3);
+// svg.append("path")
+// 	.style("fill", 'orange')
+// 	.attr('opacity', 0.8)
+// 	.attr("class", "arc3")
+// 	.attr("transform", position1)
+// 	.attr("d", arc3);
 
-svg.append("path")
-	.style("fill", 'purple')
-	.attr('opacity', 0.5)
-	.attr("class", "meanarc4")
-	.attr("transform", position1)
-	.attr("d", meanarc4);
+// svg.append("path")
+// 	.style("fill", 'purple')
+// 	.attr('opacity', 0.5)
+// 	.attr("class", "meanarc4")
+// 	.attr("transform", position1)
+// 	.attr("d", meanarc4);
 
-svg.append("path")
-	.style("fill", 'purple')
-	.attr('opacity', 0.8)
-	.attr("class", "arc4")
-	.attr("transform", position1)
-	.attr("d", arc4);
+// svg.append("path")
+// 	.style("fill", 'purple')
+// 	.attr('opacity', 0.8)
+// 	.attr("class", "arc4")
+// 	.attr("transform", position1)
+// 	.attr("d", arc4);
 
 // append pinch circle to svg
 
@@ -685,32 +702,32 @@ display();
 // 		display();
 // 	});
 
-function randomize() {
-	arc1.outerRadius(randomRadius());
-	arc2.outerRadius(randomRadius());
-	arc3.outerRadius(randomRadius());
-	arc4.outerRadius(randomRadius());
-	meanarc1.outerRadius(randomRadius());
-	meanarc2.outerRadius(randomRadius());
-	meanarc3.outerRadius(randomRadius());
-	meanarc4.outerRadius(randomRadius());
-	display();
-}
+// function randomize() {
+// 	arc1.outerRadius(randomRadius());
+// 	arc2.outerRadius(randomRadius());
+// 	arc3.outerRadius(randomRadius());
+// 	arc4.outerRadius(randomRadius());
+// 	meanarc1.outerRadius(randomRadius());
+// 	meanarc2.outerRadius(randomRadius());
+// 	meanarc3.outerRadius(randomRadius());
+// 	meanarc4.outerRadius(randomRadius());
+// 	display();
+// }
 
-function fillarc(r1, r2, r3, r4) {
-	arc1.outerRadius(minradius+((maxradius-minradius)*r1));
-	arc2.outerRadius(minradius+((maxradius-minradius)*r2));
-	arc3.outerRadius(minradius+((maxradius-minradius)*r3));
-	arc4.outerRadius(minradius+((maxradius-minradius)*r4));
-	// display();
-}
+// function fillarc(r1, r2, r3, r4) {
+// 	arc1.outerRadius(minradius+((maxradius-minradius)*r1));
+// 	arc2.outerRadius(minradius+((maxradius-minradius)*r2));
+// 	arc3.outerRadius(minradius+((maxradius-minradius)*r3));
+// 	arc4.outerRadius(minradius+((maxradius-minradius)*r4));
+// 	// display();
+// }
 
 function zeroarc() {
-	arc1.outerRadius(minradius);
-	arc2.outerRadius(minradius);
-	arc3.outerRadius(minradius);
-	arc4.outerRadius(minradius);
-	handRing.outerRadius(minradius-handRingRadius);
+	// arc1.outerRadius(minradius);
+	// arc2.outerRadius(minradius);
+	// arc3.outerRadius(minradius);
+	// arc4.outerRadius(minradius);
+	// handRing.outerRadius(minradius-handRingRadius);
 	handCircle.outerRadius(0);
 
 	pincharc1.outerRadius(minradius);
@@ -737,9 +754,9 @@ var confidenceOpacity = 0.5;
 function display() {
 	var svg = d3.select("body").transition();
 
-	svg.select(".handRing")
-	.duration(150)
-	.attr("d", handRing)
+	// svg.select(".handRing")
+	// .duration(150)
+	// .attr("d", handRing)
 
 	svg.select(".pianoCircle")
 	.duration(150)
@@ -766,44 +783,55 @@ function display() {
 	.attr("d", handCircle)	
 	.attr("opacity", confidenceOpacity)
 
+	svg.select(".pinchCircle")
+	.duration(150)
+	.attr("d", handCircle)
 
+	svg.select(".fistCircle")
+	.duration(150)
+	.attr("d", handCircle)
+
+	svg.select(".gesturesCircle")
+	.duration(150)
+	.attr("d", handCircle)
+	
 	//drawing lettters
 
 	// svg.select(".handRing2")
 	// .duration(5)
 	// .attr("d", handRing2)
 
-	svg.select(".arc1")
-	.duration(150)
-	.attr("d", arc1)
+	// svg.select(".arc1")
+	// .duration(150)
+	// .attr("d", arc1)
 
-	svg.select(".arc2")
-	.duration(150)
-	.attr("d", arc2)
+	// svg.select(".arc2")
+	// .duration(150)
+	// .attr("d", arc2)
 
-	svg.select(".arc3")
-	.duration(150)
-	.attr("d", arc3)
+	// svg.select(".arc3")
+	// .duration(150)
+	// .attr("d", arc3)
 
-	svg.select(".arc4")
-	.duration(150)
-	.attr("d", arc4)
+	// svg.select(".arc4")
+	// .duration(150)
+	// .attr("d", arc4)
 
-	svg.select(".meanarc1")
-	.duration(1000)
-	.attr("d", meanarc1)
+	// svg.select(".meanarc1")
+	// .duration(1000)
+	// .attr("d", meanarc1)
 
-	svg.select(".meanarc2")
-	.duration(1000)
-	.attr("d", meanarc2)
+	// svg.select(".meanarc2")
+	// .duration(1000)
+	// .attr("d", meanarc2)
 
-	svg.select(".meanarc3")
-	.duration(1000)
-	.attr("d", meanarc3)
+	// svg.select(".meanarc3")
+	// .duration(1000)
+	// .attr("d", meanarc3)
 
-	svg.select(".meanarc4")
-	.duration(1000)
-	.attr("d", meanarc4)
+	// svg.select(".meanarc4")
+	// .duration(1000)
+	// .attr("d", meanarc4)
 
 
 	// display pinch circle
@@ -925,7 +953,7 @@ function display() {
 }
 
 function displayHandRing() {
-	handRing.outerRadius(minradius-handRingRadius2);
+	// handRing.outerRadius(minradius-handRingRadius2);
 	handCircle.outerRadius(30);
 }
 
@@ -1047,10 +1075,14 @@ function updatePianoAverage() {
 	if (pianoTime > 0) {
 		var pianoPinchAverage = average(pianoPinchTotal, pianoTime);
 		var pianoGrabAverage = average(pianoGrabTotal, pianoTime);
-		var pianoGesturesAverage = average(pianoGesturesTotal, maxValue(pianoGesturesTotal, violinGesturesTotal, conductGesturesTotal));
+		
 		pinchmeanarc4.outerRadius(minradius+((maxradius-minradius)*pianoPinchAverage));
 		grabmeanarc4.outerRadius(minradius+((maxradius-minradius)*pianoGrabAverage));
-		gesturesmeanarc4.outerRadius(minradius+((maxradius-minradius)*pianoGesturesAverage));
+		if (pianoGesturesTotal > 0) {
+			var pianoGesturesAverage = average(pianoGesturesTotal, maxValue(pianoGesturesTotal, violinGesturesTotal, conductGesturesTotal));
+			gesturesmeanarc4.outerRadius(minradius+((maxradius-minradius)*pianoGesturesAverage));
+		}
+		
 		// console.log();
 	}	
 }
@@ -1059,10 +1091,14 @@ function updateViolinAverage() {
 	if (violinTime > 0) {
 		var violinPinchAverage = average(violinPinchTotal, violinTime);
 		var violinGrabAverage = average(violinGrabTotal, violinTime);
-		var violinGesturesAverage = average(violinGesturesTotal, maxValue(pianoGesturesTotal, violinGesturesTotal, conductGesturesTotal));
+		
 		pinchmeanarc2.outerRadius(minradius+((maxradius-minradius)*violinPinchAverage));
 		grabmeanarc2.outerRadius(minradius+((maxradius-minradius)*violinGrabAverage));
-		gesturesmeanarc2.outerRadius(minradius+((maxradius-minradius)*violinGesturesAverage));
+		if (violinGesturesTotal > 0) {
+			var violinGesturesAverage = average(violinGesturesTotal, maxValue(pianoGesturesTotal, violinGesturesTotal, conductGesturesTotal));
+			gesturesmeanarc2.outerRadius(minradius+((maxradius-minradius)*violinGesturesAverage));
+		}
+		
 		// console.log(violinPinchAverage);
 	}
 	
@@ -1072,10 +1108,14 @@ function updateConductAverage() {
 	if (conductTime > 0) {
 		var conductPinchAverage = average(conductPinchTotal, conductTime);
 		var conductGrabAverage = average(conductGrabTotal, conductTime);
-		var conductGesturesAverage = average(conductGesturesTotal, maxValue(pianoGesturesTotal, violinGesturesTotal, conductGesturesTotal));
+		
 		pinchmeanarc1.outerRadius(minradius+((maxradius-minradius)*conductPinchAverage));
 		grabmeanarc1.outerRadius(minradius+((maxradius-minradius)*conductGrabAverage));
-		gesturesmeanarc1.outerRadius(minradius+((maxradius-minradius)*conductGesturesAverage));
+		if (conductGesturesTotal > 0) {
+			var conductGesturesAverage = average(conductGesturesTotal, maxValue(pianoGesturesTotal, violinGesturesTotal, conductGesturesTotal));
+			gesturesmeanarc1.outerRadius(minradius+((maxradius-minradius)*conductGesturesAverage));
+		}
+		
 		// console.log(conductPinchAverage);
 	}
 }
@@ -1084,10 +1124,14 @@ function updateClarinetAverage() {
 	if (clarinetTime > 0) {
 		var clarinetPinchAverage = average(clarinetPinchTotal, clarinetTime);
 		var clarinetGrabAverage = average(clarinetGrabTotal, clarinetTime);
-		var clarinetGesturesAverage = average(clarinetGesturesTotal, maxValue(pianoGesturesTotal, violinGesturesTotal, conductGesturesTotal));
+		
 		pinchmeanarc3.outerRadius(minradius+((maxradius-minradius)*clarinetPinchAverage));
 		grabmeanarc3.outerRadius(minradius+((maxradius-minradius)*clarinetGrabAverage));
-		gesturesmeanarc3.outerRadius(minradius+((maxradius-minradius)*clarinetGesturesAverage));
+		if (clarinetGesturesTotal > 0) {
+			var clarinetGesturesAverage = average(clarinetGesturesTotal, maxValue(pianoGesturesTotal, violinGesturesTotal, conductGesturesTotal));
+			gesturesmeanarc3.outerRadius(minradius+((maxradius-minradius)*clarinetGesturesAverage));
+		}
+		
 		// console.log(conductPinchAverage);
 	}
 }
@@ -1318,7 +1362,7 @@ var handOutput = document.getElementById("handData");
       updateViolin(violinPinch, violinGrab, violinGestures)
       updateConduting(conductPinch, conductGrab, conductGestures)
       updateClarinet(clarinetPinch, clarinetGrab, clarinetGestures)
-      fillarc(hand.grabStrength, hand.pinchStrength, hand.confidence, frame.gestures.length/5)
+      // fillarc(hand.grabStrength, hand.pinchStrength, hand.confidence, frame.gestures.length/5)
       updateConfidence(hand.confidence)
   	}
   }
